@@ -1,0 +1,11 @@
+Note to Self
+
+How to create a symlink (internally-readable shortcut)
+
+	On Windows, use the command "mklink NewLinkLocation PathToTarget" 
+	- NewLinkLocation = The location where the newly created SymLink should be created
+	- PathToTarget = The location of the file/directory
+	- Add a "/d" after "mklink" to create a directory link rather than a single-file link
+	- NOTE: Windows requires backslashes in paths, like this "C:\Users\Name\File"
+
+	On Linux/Mac, use ln instead of mklink

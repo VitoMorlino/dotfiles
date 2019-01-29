@@ -1,0 +1,5 @@
+[core]
+	autocrlf = true
+[user]
+	name = Vito Morlino
+	email = vjmorlino@gmail.com
