@@ -9,4 +9,4 @@ When settings are changed from this customize menu, the corresponding code is au
 
 After testing the generated code, if it is something you want to keep for the future, move the automatically generated code to custom-config.org (in an attempt to keep the auto-generated file as empty as possible)
 
-Note: If code already exists with the changed variables (within customize-auto-generated.el), the existing code will be updated instead of the code being added to the bottom of the file.
+Note: If code already exists for the changed variables (within customize-auto-generated.el), the existing code will be updated instead of the code being added to the bottom of the file.
