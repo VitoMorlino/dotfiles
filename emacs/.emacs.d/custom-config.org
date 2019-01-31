@@ -4,26 +4,19 @@ Note To Self:
 
 * General Settings
 
-Don't show the Startup Screen
+** Don't show the Startup Screen
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-screen t)
 #+END_SRC
 
+** Location of M-x Customize file
 When using the built-in Customize menu, save changes to a separate file, not in init.el
 #+BEGIN_SRC emacs-lisp
 (setq custom-file (expand-file-name "customize-auto-generated.el" user-emacs-directory))
 (load custom-file)
 #+END_SRC
 
-** Subhead
-#+BEGIN_SRC emacs-lisp
-(message "Hello from inside Subhead")
-#+END_SRC
-
+** Theme
 #+BEGIN_SRC emacs-lisp
 (load-theme 'tango-dark)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(message "Hello from after adding setting theme")
 #+END_SRC
