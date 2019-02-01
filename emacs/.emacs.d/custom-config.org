@@ -2,7 +2,7 @@ Note To Self:
 - To insert a blank code block, type <s [tab]
 - The #+BEGIN_SRC line must include "emacs-lisp"
 - To insert an emacs-lisp code block specifically, type <el [tab]
-  (because we told it to in the Org-mode section below
+  (because we told it to do that in the Org-mode section below
 
 * General Settings
 
@@ -23,6 +23,11 @@ When using the built-in Customize menu, save changes to a separate file, not in 
   (load-theme 'tango-dark)
 #+END_SRC
 
+** Enable iBuffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+END_SRC
+
 * IDO
 Interactively Do Things
 ** Enable IDO mode
@@ -38,7 +43,7 @@ Interactively Do Things
     :ensure t
     :init ;lines under :init are only executed after the package is initialized
     (ido-vertical-mode 1))
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only) 
 #+END_SRC
 
 ** SMEX
