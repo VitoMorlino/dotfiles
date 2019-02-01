@@ -6,17 +6,35 @@ Note To Self:
 
 ** Don't show the Startup Screen
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-screen t)
+  (setq inhibit-startup-screen t)
 #+END_SRC
 
 ** Location of M-x Customize file
 When using the built-in Customize menu, save changes to a separate file, not in init.el
 #+BEGIN_SRC emacs-lisp
-(setq custom-file (expand-file-name "customize-auto-generated.el" user-emacs-directory))
-(load custom-file)
+  (setq custom-file (expand-file-name "customize-auto-generated.el" user-emacs-directory))
+  (load custom-file)
 #+END_SRC
 
 ** Theme
 #+BEGIN_SRC emacs-lisp
-(load-theme 'tango-dark)
+  (load-theme 'tango-dark)
+#+END_SRC
+
+* IDO
+Interactively Do Things
+** Enable IDO mode
+#+BEGIN_SRC emacs-lisp
+  (setq ido-enable-flex-matching t)
+  (setq ido-everwhere t)
+  (ido-mode 1)
+#+END_SRC
+
+** IDO Vertical
+#+BEGIN_SRC emacs-lisp
+  (use-package ido-vertical-mode
+    :ensure t
+    :init ;lines under :init are only executed after the package is initialized
+    (ido-vertical-mode 1))
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 #+END_SRC
