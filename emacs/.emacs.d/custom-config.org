@@ -106,6 +106,12 @@ When using the built-in Customize menu, save changes to a separate file, not in 
 #+BEGIN_SRC emacs-lisp
   (delete-selection-mode t)
 #+END_SRC
+
+** Show matching parentheses
+#+BEGIN_SRC emacs-lisp
+  (setq show-paren-delay 0.0)
+  (show-paren-mode t)
+#+END_SRC
 * Dired
 ** Open file in its default program
 #+BEGIN_SRC emacs-lisp
@@ -118,8 +124,8 @@ When using the built-in Customize menu, save changes to a separate file, not in 
      ;; If we're on Microsoft Windows:
      ((string-equal system-type "windows-nt")
       (dolist (file file-list) ;for each "file" in "file-list"
-	(w32-shell-execute "open" file))
-     If we're on Mac OS X
+	(w32-shell-execute "open" file)))
+     ;; If we're on Mac OS X
      ((string-equal system-type "darwin")
       (dired-do-shell-command "open" arg file-list))))
 
