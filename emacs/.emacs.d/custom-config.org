@@ -2,7 +2,7 @@ Note To Self:
 - To insert a blank code block, type <s [tab]
 - The #+BEGIN_SRC line must include "emacs-lisp"
 - To insert an emacs-lisp code block specifically, type <el [tab]
-  (because we told it to do that in the Org-mode section below
+  (because we told it to do that in the Org-mode section below)
 
 * use-package
 ** Always ensure used packages are installed
@@ -62,7 +62,7 @@ When using the built-in Customize menu, save changes to a separate file, not in 
 	(setq beg (line-beginning-position) end (line-end-position)))
       (comment-or-uncomment-region beg end)))
 
-  (global-set-key (kbd "C-;") 'vjm/comment-or-uncomment-region-or-line)) 
+  (global-set-key (kbd "C-;") 'vjm/comment-or-uncomment-region-or-line)
 #+END_SRC
 
 ** Change text size
@@ -74,6 +74,36 @@ When using the built-in Customize menu, save changes to a separate file, not in 
   (define-key global-map (kbd "C-)") 'vjm/reset-text-size)
   (define-key global-map (kbd "C-+") 'text-scale-increase)
   (define-key global-map (kbd "C-_") 'text-scale-decrease)
+#+END_SRC
+
+** Open files from home directory
+#+BEGIN_SRC emacs-lisp
+  (setq default-directory "~/")
+#+END_SRC
+
+** Increase garbage collection threshold
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold 20000000)
+#+END_SRC
+
+** Delete trailing whitespace when a buffer is saved
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+** Add a newline to the bottom of a file if saved without one
+#+BEGIN_SRC emacs-lisp
+  (setq require-final-newline t)
+#+END_SRC
+
+** Treat camelCase as separate words in every programming mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'subword-mode)
+#+END_SRC
+
+** Overwrite selected text
+#+BEGIN_SRC emacs-lisp
+  (delete-selection-mode t)
 #+END_SRC
 * Dired
 ** Open file in its default program
@@ -104,7 +134,7 @@ Interactively Do Things
     :ensure t
     :init ;lines under :init are only executed after the package is initialized
     (ido-vertical-mode 1))
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only) 
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 #+END_SRC
 
 ** SMEX
