@@ -1,3 +1,5 @@
+Functions prefixed with =hrs/= come from [[https://github.com/hrs/dotfiles/tree/master/emacs/.emacs.d][Harry Schwartz's emacs configuration]]
+
 Note To Self:
 - To insert a blank code block, type <s [tab]
 - The #+BEGIN_SRC line must include "emacs-lisp"
@@ -53,7 +55,7 @@ When using the built-in Customize menu, save changes to a separate file, not in 
 
 ** Comment/Uncomment Region or Line
 #+BEGIN_SRC emacs-lisp
-  (defun vjm/comment-or-uncomment-region-or-line ()
+  (defun hrs/comment-or-uncomment-region-or-line ()
     "Comments or uncomments the region or the current line if
   there's no active region."
     (interactive)
@@ -63,16 +65,16 @@ When using the built-in Customize menu, save changes to a separate file, not in 
 	(setq beg (line-beginning-position) end (line-end-position)))
       (comment-or-uncomment-region beg end)))
 
-  (global-set-key (kbd "C-;") 'vjm/comment-or-uncomment-region-or-line)
+  (global-set-key (kbd "C-;") 'hrs/comment-or-uncomment-region-or-line)
 #+END_SRC
 
 ** Change text size
 #+BEGIN_SRC emacs-lisp
-  (defun vjm/reset-text-size ()
+  (defun hrs/reset-text-size ()
     (interactive)
     (text-scale-set 0))
 
-  (define-key global-map (kbd "C-)") 'vjm/reset-text-size)
+  (define-key global-map (kbd "C-)") 'hrs/reset-text-size)
   (define-key global-map (kbd "C-+") 'text-scale-increase)
   (define-key global-map (kbd "C-_") 'text-scale-decrease)
 #+END_SRC
@@ -112,6 +114,7 @@ When using the built-in Customize menu, save changes to a separate file, not in 
   (setq show-paren-delay 0.0)
   (show-paren-mode t)
 #+END_SRC
+
 * Dired
 ** Open file in its default program
 #+BEGIN_SRC emacs-lisp
@@ -133,6 +136,7 @@ When using the built-in Customize menu, save changes to a separate file, not in 
     '(progn
        (define-key dired-mode-map (kbd "M-<return>") 'vjm/dired-open-file-default-program) ))
 #+END_SRC
+
 * IDO
 Interactively Do Things
 ** Enable IDO mode
