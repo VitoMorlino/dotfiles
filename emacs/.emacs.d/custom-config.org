@@ -1,4 +1,13 @@
-Functions prefixed with =hrs/= come from [[https://github.com/hrs/dotfiles/tree/master/emacs/.emacs.d][Harry Schwartz's emacs configuration]]
+This file contains a lot of code written by other emacs users that is organized
+alongside my own code. Rather than trying to notate whom every little snippet
+came from, I'm keeping a list of links to their repositories.
+
+| Some code and inspiration from:      | Reference tag |
+|--------------------------------------+---------------|
+| [[https://github.com/hrs/dotfiles/tree/master/emacs/.emacs.d][Harry Schwartz's emacs configuration]] | =hrs/=        |
+| [[https://github.com/sachac/.emacs.d][Sacha Chua's emacs configuration]]     | =sachac/=     |
+| [[https://github.com/magnars/.emacs.d][Magnar Sveen's emacs configuration]]   | =magnars/=    |
+
 
 Note To Self:
 - To insert a blank code block, type <s [tab]
@@ -12,108 +21,6 @@ Note To Self:
   (setq use-package-always-ensure t)
 #+END_SRC
 
-* General Settings
-
-** Don't show the Startup Screen
-#+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-screen t)
-#+END_SRC
-
-** Location of M-x Customize file
-When using the built-in Customize menu, save changes to a separate file, not in init.el
-#+BEGIN_SRC emacs-lisp
-  (setq custom-file (expand-file-name "customize-auto-generated.el" user-emacs-directory))
-  (load custom-file)
-#+END_SRC
-
-** Quickly visit emacs config
-#+BEGIN_SRC emacs-lisp
-  (defun vjm/edit-emacs-config ()
-    (interactive)
-    (find-file "~/.emacs.d/custom-config.org"))
-
-  (global-set-key (kbd "C-c e") 'vjm/edit-emacs-config)
-#+END_SRC
-
-** Reload init file
-#+BEGIN_SRC emacs-lisp
-  (defun vjm/reload-init-file ()
-    (interactive)
-    (load-file user-init-file))
-
-  (global-set-key (kbd "C-c r") 'vjm/reload-init-file)
-#+END_SRC
-** Theme
-#+BEGIN_SRC emacs-lisp
-  (load-theme 'tango-dark)
-#+END_SRC
-
-** Enable iBuffer
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-#+END_SRC
-
-** Comment/Uncomment Region or Line
-#+BEGIN_SRC emacs-lisp
-  (defun hrs/comment-or-uncomment-region-or-line ()
-    "Comments or uncomments the region or the current line if
-  there's no active region."
-    (interactive)
-    (let (beg end)
-      (if (region-active-p)
-	  (setq beg (region-beginning) end (region-end))
-	(setq beg (line-beginning-position) end (line-end-position)))
-      (comment-or-uncomment-region beg end)))
-
-  (global-set-key (kbd "C-;") 'hrs/comment-or-uncomment-region-or-line)
-#+END_SRC
-
-** Change text size
-#+BEGIN_SRC emacs-lisp
-  (defun hrs/reset-text-size ()
-    (interactive)
-    (text-scale-set 0))
-
-  (define-key global-map (kbd "C-)") 'hrs/reset-text-size)
-  (define-key global-map (kbd "C-+") 'text-scale-increase)
-  (define-key global-map (kbd "C-_") 'text-scale-decrease)
-#+END_SRC
-
-** Open files from home directory
-#+BEGIN_SRC emacs-lisp
-  (setq default-directory "~/")
-#+END_SRC
-
-** Increase garbage collection threshold
-#+BEGIN_SRC emacs-lisp
-  (setq gc-cons-threshold 20000000)
-#+END_SRC
-
-** Delete trailing whitespace when a buffer is saved
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-#+END_SRC
-
-** Add a newline to the bottom of a file if saved without one
-#+BEGIN_SRC emacs-lisp
-  (setq require-final-newline t)
-#+END_SRC
-
-** Treat camelCase as separate words in every programming mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'subword-mode)
-#+END_SRC
-
-** Overwrite selected text
-#+BEGIN_SRC emacs-lisp
-  (delete-selection-mode t)
-#+END_SRC
-
-** Show matching parentheses
-#+BEGIN_SRC emacs-lisp
-  (setq show-paren-delay 0.0)
-  (show-paren-mode t)
-#+END_SRC
 
 * Dired
 ** Open file in its default program
@@ -135,6 +42,10 @@ When using the built-in Customize menu, save changes to a separate file, not in 
   (eval-after-load "dired"
     '(progn
        (define-key dired-mode-map (kbd "M-<return>") 'vjm/dired-open-file-default-program) ))
+#+END_SRC
+** Make file sizes human-readable
+#+BEGIN_SRC emacs-lisp
+  (setq-default dired-listing-switches "-alh")
 #+END_SRC
 
 * IDO
@@ -171,7 +82,167 @@ Shortcut to insert a block of elisp
 	       '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
 #+END_SRC
 
-When editing a code snippet (with C-c '), use current window instead of opening new one
+When editing a code snippet (with =C-c '=), use current window instead of opening new one
 #+BEGIN_SRC emacs-lisp
   (setq org-src-window-setup 'current-window)
+#+END_SRC
+
+
+* General Settings
+
+** Config Files
+
+*** Quickly visit emacs config
+ #+BEGIN_SRC emacs-lisp
+   (defun vjm/edit-emacs-config ()
+     (interactive)
+     (find-file "~/.emacs.d/custom-config.org"))
+
+   (global-set-key (kbd "C-c e") 'vjm/edit-emacs-config)
+ #+END_SRC
+
+*** Reload init file
+ #+BEGIN_SRC emacs-lisp
+   (defun vjm/reload-init-file ()
+     (interactive)
+     (load-file user-init-file))
+
+   (global-set-key (kbd "C-c r") 'vjm/reload-init-file)
+ #+END_SRC
+*** Location of M-x Customize file
+ When using the built-in Customize menu, save changes to a separate file, not in
+ init.el
+ #+BEGIN_SRC emacs-lisp
+   (setq custom-file (expand-file-name "customize-auto-generated.el" user-emacs-directory))
+   (load custom-file)
+ #+END_SRC
+
+
+** Quiet Startup
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-screen t)
+  (setq initial-scratch-message nil)
+#+END_SRC
+
+** Theme
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'tango-dark)
+#+END_SRC
+
+** Enable iBuffer
+This is to replace the default =C-x C-b= buffer list that is not very friendly.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+END_SRC
+
+
+** Comment/Uncomment Region or Line
+Default functionality of =comment-or-uncomment-line= ignores empty lines when
+adding comments to a region. I want it to add comments even on empty lines.
+#+BEGIN_SRC emacs-lisp
+  (setq comment-empty-lines t)
+#+END_SRC
+
+Default functionality of =comment-or-uncomment-line= when no region is selected
+is to add a comment at the end of the line. This is not what I want. Instead, I
+want it to comment/uncomment the entire line if there is no region selected.
+#+BEGIN_SRC emacs-lisp
+  (defun hrs/comment-or-uncomment-region-or-line ()
+    "Comments or uncomments the region or the current line if
+  there's no active region."
+    (interactive)
+    (let (beg end)
+      (if (region-active-p)
+	  (setq beg (region-beginning) end (region-end))
+	(setq beg (line-beginning-position) end (line-end-position)))
+      (comment-or-uncomment-region beg end)))
+
+  (global-set-key (kbd "M-;") 'hrs/comment-or-uncomment-region-or-line)
+#+END_SRC
+
+** Change text size
+#+BEGIN_SRC emacs-lisp
+  (defun hrs/reset-text-size ()
+    (interactive)
+    (text-scale-set 0))
+
+  (define-key global-map (kbd "C-)") 'hrs/reset-text-size)
+  (define-key global-map (kbd "C-+") 'text-scale-increase)
+  (define-key global-map (kbd "C-_") 'text-scale-decrease)
+#+END_SRC
+
+** Open files from home directory
+Note: This is only the =default-directory= when emacs is first opened. When a
+file is open, the directory will be the one that the file is in
+#+BEGIN_SRC emacs-lisp
+  (setq default-directory "~/")
+#+END_SRC
+
+** Increase garbage collection threshold
+Emacs comes from a time when memory was veerrryy limited, so it needed to take
+out the trash often. We're in the distant future and we can let it pile up a bit
+longer.
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold 20000000)
+#+END_SRC
+
+** Delete trailing whitespace when a buffer is saved
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+** Treat camelCase as separate words in every programming mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'subword-mode)
+#+END_SRC
+
+
+** Don't require sentences to end with two spaces
+#+BEGIN_SRC emacs-lisp
+  (setq sentence-end-double-space nil)
+#+END_SRC
+
+
+** Overwrite selected text
+#+BEGIN_SRC emacs-lisp
+  (delete-selection-mode t)
+#+END_SRC
+
+** Add a newline to the bottom of a file if saved without one
+Sure, most things don't need a newline at the end of the file anymore...but,
+better safe than sorry.
+#+BEGIN_SRC emacs-lisp
+  (setq require-final-newline t)
+#+END_SRC
+
+** Confirm closing emacs
+#+BEGIN_SRC emacs-lisp
+  (setq confirm-kill-emacs 'y-or-n-p)
+#+END_SRC
+
+
+** Syntax highlighting everywhere
+#+BEGIN_SRC emacs-lisp
+  (global-font-lock-mode t)
+#+END_SRC
+
+** Refresh buffer when file changes
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode t)
+#+END_SRC
+
+** Show matching parentheses
+#+BEGIN_SRC emacs-lisp
+  (setq show-paren-delay 0.0)
+  (show-paren-mode t)
+#+END_SRC
+
+** Flash screen instead of ringing bell
+#+BEGIN_SRC emacs-lisp
+  (setq visible-bell t)
+#+END_SRC
+
+** Set default line length
+#+BEGIN_SRC emacs-lisp
+  (setq-default fill-column 80)
 #+END_SRC
