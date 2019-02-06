@@ -90,17 +90,31 @@ Note: This functionality might already be included with =org-bullets=
    (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
  #+END_SRC
 
+** Enable =org-bullets=
+ =org-bullets= replaces the asterisks in =org-mode= with famcy bullets
+ #+BEGIN_SRC emacs-lisp
+   (use-package org-bullets
+     :init
+     (add-hook 'org-mode-hook 'org-bullets-mode))
+ #+END_SRC
+
+** Change the normal ... ellipsis for a folded header
+ #+BEGIN_SRC emacs-lisp
+   (setq org-ellipsis " ⤵")
+   (set-face-attribute 'org-ellipsis nil
+		       :underline nil
+		       :foreground "cyan")
+ #+END_SRC
 ** Shortcut to insert a block of elisp
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'org-structure-template-alist
-	       '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+   (add-to-list 'org-structure-template-alist
+		'("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+ #+END_SRC
 
 ** When editing a code snippet (with =C-c '=), use current window instead of opening new one
-#+BEGIN_SRC emacs-lisp
-  (setq org-src-window-setup 'current-window)
-#+END_SRC
-
+ #+BEGIN_SRC emacs-lisp
+   (setq org-src-window-setup 'current-window)
+ #+END_SRC
 
 
 * Buffers
@@ -240,11 +254,23 @@ Note: This functionality might already be included with =org-bullets=
   #+END_SRC
 
 ** Uncategorized Settings
+
+*** Set coding systems to UTF-8
+  #+BEGIN_SRC emacs-lisp
+    (prefer-coding-system 'utf-8)
+    (set-default-coding-systems 'utf-8)
+    (set-language-environment 'utf-8)
+
+    ;; I've left these (below) commented out until I find a need to set them
+    ;; (set-terminal-coding-system 'utf-8)
+    ;; (set-keyboard-coding-system 'utf-8)
+  #+END_SRC
+
 *** Open files from home directory
   Note: This is only the =default-directory= when emacs is first opened. When a
   file is open, the directory will be the one that the file is in
   #+BEGIN_SRC emacs-lisp
-    (setq default-directory "~/")
+    (setq default-directo....ry "~/")
   #+END_SRC
 
 *** Increase garbage collection threshold
