@@ -256,15 +256,19 @@ Note: This functionality might already be included with =org-bullets=
 ** Uncategorized Settings
 
 *** Set coding systems to UTF-8
-  #+BEGIN_SRC emacs-lisp
-    (prefer-coding-system 'utf-8)
-    (set-default-coding-systems 'utf-8)
-    (set-language-environment 'utf-8)
+  For some reason that I don't yet know, sometimes the utf-8 arrows that I'm
+  using as my org-mode header ellipsis display as if they were Latin-1
+  characters. Reloading my emacs configuration (even though nothing has changed)
+  will fix it (even when a computer-restart didn't).
+    #+BEGIN_SRC emacs-lisp
+      (prefer-coding-system 'utf-8)
+      (set-default-coding-systems 'utf-8)
+      (set-language-environment 'utf-8)
 
-    ;; I've left these (below) commented out until I find a need to set them
-    ;; (set-terminal-coding-system 'utf-8)
-    ;; (set-keyboard-coding-system 'utf-8)
-  #+END_SRC
+      ;; I've left these (below) commented out until I find a need to set them
+      ;; (set-terminal-coding-system 'utf-8)
+      ;; (set-keyboard-coding-system 'utf-8)
+    #+END_SRC
 
 *** Open files from home directory
   Note: This is only the =default-directory= when emacs is first opened. When a
@@ -279,6 +283,25 @@ Note: This functionality might already be included with =org-bullets=
   longer.
   #+BEGIN_SRC emacs-lisp
     (setq gc-cons-threshold 20000000)
+  #+END_SRC
+
+*** Backup Files
+  By default, Emacs saves backup files in the current directory. These are the
+  files ending in =~= that are cluttering up your directory lists. The following
+  code stashes them all in =~/.emacs.d/backups=, where I can find them with =C-x
+  C-f= (=find-file=) if I really need to.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  #+END_SRC
+
+  Disk space is cheap. Save lots.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq delete-old-versions -1)
+    (setq version-control t)
+    (setq vc-make-backup-files t)
+    (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
   #+END_SRC
 
 *** Confirm closing emacs
