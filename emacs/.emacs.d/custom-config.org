@@ -270,7 +270,7 @@ Note: This functionality might already be included with =org-bullets=
   Note: This is only the =default-directory= when emacs is first opened. When a
   file is open, the directory will be the one that the file is in
   #+BEGIN_SRC emacs-lisp
-    (setq default-directo....ry "~/")
+    (setq default-directory "~/")
   #+END_SRC
 
 *** Increase garbage collection threshold
