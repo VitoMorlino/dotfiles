@@ -82,9 +82,6 @@ Interactively Do Things
  #+END_SRC
 
 * Configure =org-mode=
-TODO: look into how to automatically indent the contents of bullets below the
-top level - like they currently do when demoting to a lower level
-Note: This functionality might already be included with =org-bullets=
 ** Automatically use =org-mode= when opening =.txt= files
  #+BEGIN_SRC emacs-lisp
    (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
@@ -115,6 +112,13 @@ Note: This functionality might already be included with =org-bullets=
  #+BEGIN_SRC emacs-lisp
    (setq org-src-window-setup 'current-window)
  #+END_SRC
+
+** <tab> to collapse heading even when point is not on the heading
+   =whitestart= here means that <tab> will function normally (eg. indent) when the
+   point is before the first non-whitespace character
+   #+BEGIN_SRC emacs-lisp
+     (setq org-cycle-emulate-tab 'whitestart)
+   #+END_SRC
 
 
 * Buffers
