@@ -108,9 +108,9 @@ Interactively Do Things
 		'("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
  #+END_SRC
 
-** When editing a code snippet (with =C-c '=), use current window instead of opening new one
+** (disabled) When editing a code snippet (with =C-c '=), use current window instead of opening new one
  #+BEGIN_SRC emacs-lisp
-   (setq org-src-window-setup 'current-window)
+   ;; (setq org-src-window-setup 'current-window)
  #+END_SRC
 
 ** <tab> to collapse heading even when point is not on the heading
