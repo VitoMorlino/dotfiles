@@ -308,7 +308,7 @@ Interactively Do Things
     (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
   #+END_SRC
 
-*** Confirm closing emacs
+*** (disabled) Confirm closing emacs
   #+BEGIN_SRC emacs-lisp
-    (setq confirm-kill-emacs 'y-or-n-p)
+    ;; (setq confirm-kill-emacs 'y-or-n-p)
   #+END_SRC
