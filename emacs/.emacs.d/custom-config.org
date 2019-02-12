@@ -2,7 +2,7 @@
 #+AUTHOR: Vito Morlino
 #+EMAIL: contact@vitomorlino.com
 
-This file contains a lot of code written by other emacs users that is organized
+This file contains a lot of code, written by other emacs users, that is organized
 alongside my own code. Rather than trying to notate whom every little snippet
 came from, I'm keeping a list of links to their repositories.
 
@@ -14,8 +14,6 @@ came from, I'm keeping a list of links to their repositories.
 
 
 Note To Self:
-- To insert a blank code block, type <s [tab]
-- The #+BEGIN_SRC line must include "emacs-lisp"
 - To insert an emacs-lisp code block specifically, type <el [tab]
   (because we told it to do that in the Org-mode section below)
 
@@ -31,6 +29,8 @@ Directory Editor
 ** Open file in its default program
  #+BEGIN_SRC emacs-lisp
    (defun vjm/dired-open-file-default-program (&optional arg file-list)
+     "Opens the selected file(s) in their default program (based on
+   operating system's current defaults."
      (interactive
       (let ((files (dired-get-marked-files t current-prefix-arg)))
 	(list current-prefix-arg files)))
@@ -108,12 +108,12 @@ Interactively Do Things
 		'("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
  #+END_SRC
 
-** (disabled) When editing a code snippet (with =C-c '=), use current window instead of opening new one
+** When editing a code snippet (with =C-c '=), use current window instead of opening new one
  #+BEGIN_SRC emacs-lisp
-   ;; (setq org-src-window-setup 'current-window)
+   (setq org-src-window-setup 'current-window)
  #+END_SRC
 
-** <tab> to collapse heading even when point is not on the heading
+** Collapse heading with =<tab>= even when point is not on the heading
    =whitestart= here means that <tab> will function normally (eg. indent) when the
    point is before the first non-whitespace character
    #+BEGIN_SRC emacs-lisp
@@ -128,6 +128,8 @@ Interactively Do Things
 
    #+BEGIN_SRC emacs-lisp
      (defun vjm/org-blank-after-heading ()
+       "Inserts a newline after the newly created header when
+     org-insert-heading is called."
        (interactive)
        (unless (org-next-line-empty-p) ;unless the next line is already empty
 	 (save-excursion (insert "\n")))) ;insert newline and return point to where it was
