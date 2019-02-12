@@ -274,18 +274,12 @@ Interactively Do Things
 ** Uncategorized Settings
 
 *** Set coding systems to UTF-8
-  For some reason that I don't yet know, sometimes the utf-8 arrows that I'm
-  using as my org-mode header ellipsis display as if they were Latin-1
-  characters. Reloading my emacs configuration (even though nothing has changed)
-  will fix it (even when a computer-restart didn't).
     #+BEGIN_SRC emacs-lisp
       (prefer-coding-system 'utf-8)
-      (set-default-coding-systems 'utf-8)
       (set-language-environment 'utf-8)
-
-      ;; I've left these (below) commented out until I find a need to set them
-      ;; (set-terminal-coding-system 'utf-8)
-      ;; (set-keyboard-coding-system 'utf-8)
+      (set-default-coding-systems 'utf-8)
+      (set-terminal-coding-system 'utf-8)
+      (set-keyboard-coding-system 'utf-8)
     #+END_SRC
 
 *** Open files from home directory
