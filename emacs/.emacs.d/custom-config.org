@@ -120,6 +120,20 @@ Interactively Do Things
      (setq org-cycle-emulate-tab 'whitestart)
    #+END_SRC
 
+** Ensure newline between outline items
+   The default behavior of org-insert-heading-respect-content with =C-<return>=
+   already ensures a newline /above/ the newly created heading (using the
+   variable =org-blank-before-new-entry=). However, I want it to also ensure a
+   newline /below/ the newly created heading.
+
+   #+BEGIN_SRC emacs-lisp
+     (defun vjm/org-blank-after-heading ()
+       (interactive)
+       (unless (org-next-line-empty-p) ;unless the next line is already empty
+	 (save-excursion (insert "\n")))) ;insert newline and return point to where it was
+
+     (add-hook 'org-insert-heading-hook 'vjm/org-blank-after-heading)
+   #+END_SRC
 
 * Buffers
 ** Enable iBuffer
