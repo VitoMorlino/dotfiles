@@ -147,6 +147,27 @@ Interactively Do Things
    (global-auto-revert-mode t)
  #+END_SRC
 
+** Split window balances all windows then switches to the new one
+   When splitting a window, I invariably want to switch to the new window. This makes that automatic.
+   #+BEGIN_SRC emacs-lisp
+     (defun hrs/split-window-below-and-switch ()
+       "Split the window horizontally, then switch to the new pane."
+       (interactive)
+       (split-window-below)
+       (balance-windows)
+       (other-window 1))
+
+     (defun hrs/split-window-right-and-switch ()
+       "Split the window vertically, then switch to the new pane."
+       (interactive)
+       (split-window-right)
+       (balance-windows)
+       (other-window 1))
+
+     (global-set-key (kbd "C-x 2") 'hrs/split-window-below-and-switch)
+     (global-set-key (kbd "C-x 3") 'hrs/split-window-right-and-switch)
+   #+END_SRC
+
 * General Settings
 ** Config Files
 *** Quickly visit emacs config
