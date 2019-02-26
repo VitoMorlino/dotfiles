@@ -308,11 +308,21 @@ Interactively Do Things
   #+END_SRC
 
 ** Uncategorized Settings
-
 *** Shortcut to open my personal command reference
     #+BEGIN_SRC emacs-lisp
-      (defun vjm/command-help()
-	(interactive)
+      (defun vjm/command-help(&optional ARG)
+	"Opens my personal lists/tables of commands to remember.
+
+	If a prefix argument of '2' or '3' is used, the current buffer is
+	split vertically (2) or horizontally (3) and the file is opened
+	in the new window"
+	(interactive "p")
+	;; If a prefix argument is supplied with C-u (or C-<AnyNumber>)
+	(cond
+	 ((= ARG 2) (hrs/split-window-below-and-switch))
+	 ((= ARG 3) (hrs/split-window-right-and-switch))
+	 ;; If current-prefix-arg is non-nil and didn't match one of the above conditions, it's not valid
+	 (current-prefix-arg (message "Invalid ARG %s" ARG)))
 	(find-file "~/OneDrive/notes_resources/leisure_fun_other/emacs/notes_emacs-commands-to-remember.org"))
 
       (global-set-key (kbd "C-c h") 'vjm/command-help)
