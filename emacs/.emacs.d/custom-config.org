@@ -95,6 +95,19 @@ Interactively Do Things
      (add-hook 'org-mode-hook 'org-bullets-mode))
  #+END_SRC
 
+** Automatically use =auto-fill-mode=
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook 'turn-on-auto-fill)
+   #+END_SRC
+
+** <return> automatically indents (swap with =C-j=)
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook
+	       (lambda()
+		 (define-key org-mode-map (kbd "<return>") 'org-return-indent)
+		 (define-key org-mode-map (kbd "C-j") 'org-return)))
+   #+END_SRC
+
 ** Change the normal ... ellipsis for a folded header
  #+BEGIN_SRC emacs-lisp
    (setq org-ellipsis " ⤵")
