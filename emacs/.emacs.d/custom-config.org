@@ -309,6 +309,15 @@ Interactively Do Things
 
 ** Uncategorized Settings
 
+*** Shortcut to open my personal command reference
+    #+BEGIN_SRC emacs-lisp
+      (defun vjm/command-help()
+	(interactive)
+	(find-file "~/OneDrive/notes_resources/leisure_fun_other/emacs/notes_emacs-commands-to-remember.org"))
+
+      (global-set-key (kbd "C-c h") 'vjm/command-help)
+    #+END_SRC
+
 *** Set coding systems to UTF-8
     #+BEGIN_SRC emacs-lisp
       (prefer-coding-system 'utf-8)
