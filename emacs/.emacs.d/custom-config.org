@@ -185,7 +185,7 @@ Interactively Do Things
 
 * General Settings
 ** Config Files
-*** Quickly visit emacs config
+*** Shortcut to quickly visit emacs config
   #+BEGIN_SRC emacs-lisp
     (defun vjm/edit-emacs-config ()
       (interactive)
@@ -194,7 +194,7 @@ Interactively Do Things
     (global-set-key (kbd "C-c e") 'vjm/edit-emacs-config)
   #+END_SRC
 
-*** Reload init file
+*** Shortcut to reload init file
   #+BEGIN_SRC emacs-lisp
     (defun vjm/reload-init-file ()
       (interactive)
