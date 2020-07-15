@@ -2,7 +2,7 @@
 #+AUTHOR: Vito Morlino
 #+EMAIL: contact@vitomorlino.com
 
-This file contains a lot of code, written by other emacs users, that is organized
+This file contains a lot of code written by other emacs users that is organized
 alongside my own code. Rather than trying to notate whom every little snippet
 came from, I'm keeping a list of links to their repositories.
 
@@ -16,12 +16,14 @@ came from, I'm keeping a list of links to their repositories.
 Note To Self:
 - To insert an emacs-lisp code block specifically, type <el [tab]
   (because we told it to do that in the Org-mode section below)
+- As of Org 9.2, we can use =C-c C-,= to interactively insert a block
 
 * Configure =use-package=
 ** Always ensure used packages are installed
  #+BEGIN_SRC emacs-lisp
    (setq use-package-always-ensure t)
  #+END_SRC
+
 
 
 * Configure =dired=
@@ -54,6 +56,7 @@ Directory Editor
    (setq-default dired-listing-switches "-alh")
  #+END_SRC
 
+
 * Configure =ido-mode=
 Interactively Do Things
 ** Enable IDO mode
@@ -81,6 +84,7 @@ Interactively Do Things
      ("M-x" . smex))
  #+END_SRC
 
+
 * Configure =org-mode=
 ** Automatically use =org-mode= when opening =.txt= files
  #+BEGIN_SRC emacs-lisp
@@ -100,7 +104,7 @@ Interactively Do Things
      (add-hook 'org-mode-hook 'turn-on-auto-fill)
    #+END_SRC
 
-** <return> automatically indents (swap with =C-j=)
+** =<return>= automatically indents (swap with =C-j=)
    #+BEGIN_SRC emacs-lisp
      (add-hook 'org-mode-hook
 	       (lambda()
@@ -115,19 +119,33 @@ Interactively Do Things
 		       :underline nil
 		       :foreground "cyan")
  #+END_SRC
-** Shortcut to insert a block of elisp
- #+BEGIN_SRC emacs-lisp
-   (add-to-list 'org-structure-template-alist
-		'("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
- #+END_SRC
+** Shortcut to insert a block of elisp with =<el= or =C-c C-,=
+   The structure template expansion mechanism was changed in Org 9.2, combining
+   =org-insert-structure-template=, bound to =C-c C-,=.
+   To continue to have the option of using the old method of typing =<'key'
+   [TAB]=, we must require the =org-tempo= library
 
-** When editing a code snippet (with =C-c '=), use current window instead of opening new one
+   #+BEGIN_SRC emacs-lisp
+   (require 'org-tempo)
+   (add-to-list 'org-structure-template-alist
+	;;	'("el" .  "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC") ;; old structure
+		'("el" . "src emacs-lisp\n" )) ;; new structure
+   #+END_SRC
+
+** When editing a code snippet (with =C-c '=)
  #+BEGIN_SRC emacs-lisp
-   (setq org-src-window-setup 'current-window)
+   ;; (setq org-src-window-setup 'current-window) ;; use current window instead of opening new one
+   ;; (setq org-src-window-setup 'split-window-right) ;; split current window and show edit buffer on right
+   (setq org-src-window-setup 'split-window-below) ;; split current window and show edit buffer below
+   ;; (setq org-src-window-setup 'other-window) ;; use =switch-to-buffer-other-window= for edit buffer
+   ;; (setq org-src-window-setup 'other-frame) ;; use =switch-to-buffer-other-frame= for edit buffer
  #+END_SRC
 
 ** Collapse heading with =<tab>= even when point is not on the heading
-   =whitestart= here means that <tab> will function normally (eg. indent) when the
+   =t= here means that =<tab>= will function normally (eg. indent) everywhere
+   except in headlines
+
+   =whitestart= instead of =t= means that <tab> will function normally (eg. indent) when the
    point is before the first non-whitespace character
    #+BEGIN_SRC emacs-lisp
      (setq org-cycle-emulate-tab 'whitestart)
@@ -149,6 +167,52 @@ Interactively Do Things
 
      (add-hook 'org-insert-heading-hook 'vjm/org-blank-after-heading)
    #+END_SRC
+
+** Enable/Configure =org-drill=
+   =org-drill= Org-Drill is an extension for Org mode. Org-Drill asdf asdf asdf
+   uses a spaced repetition algorithm to conduct interactive "drill
+   sessions", using org files as sources of facts to be memorised. Each topic
+   is treated as a "flash card". The material to be remembered is presented to
+   the student in random order. The student rates his or her recall of each
+   item, and this information is used to schedule the item for later revision.
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-drill)
+   #+END_SRC
+
+** Shortcut to insert my custom =Hotkey-Description= table
+   #+begin_src emacs-lisp
+     (defun vjm/create-hotkey-description-table (&optional arg)
+       "Shortcut to automatically create a two-column table intended for hoykeys and their descriptions."
+       (interactive)
+       (if (y-or-n-p "Insert custom hotkey table? ")
+	   (progn
+	     (org-table-create "2x1")
+	     (org-table-insert-hline)
+	     (org-table-next-field)
+	     (insert "Hotkey")
+	     (org-table-next-field)
+	     (insert "Description")
+	     (org-table-move-row-down)
+	     (org-table-insert-row)
+	     (org-table-move-row-down)
+	     (org-table-insert-hline)
+	     (org-table-move-row-down)
+	     (org-table-insert-hline))
+       (org-table-create-or-convert-from-region arg))) ;; if not inserting custom table, revert to default behavior
+
+     (eval-after-load "org" '(define-key org-mode-map (kbd "C-c |") nil))
+     (global-set-key (kbd "C-c |") 'vjm/create-hotkey-description-table)
+   #+end_src
+
+
+* Configure =org-capture=
+   Capture lets you quickly store notes with little interruption of your work
+   flow. Org’s method for capturing new items is heavily inspired by John
+   Wiegley’s excellent Remember package.
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-c c") 'org-capture)
+   #+END_SRC
+
 
 * Buffers
 ** Enable iBuffer
@@ -182,6 +246,45 @@ Interactively Do Things
      (global-set-key (kbd "C-x 2") 'hrs/split-window-below-and-switch)
      (global-set-key (kbd "C-x 3") 'hrs/split-window-right-and-switch)
    #+END_SRC
+
+** Resize windows with arrow keys
+   =C-S-up/down/left/right= was being used in =org-mode=, even after setting a
+   global key, so I'm explicitly clearing the =org-mode= local keybindings that
+   I'm using before remapping them.
+   #+begin_src emacs-lisp
+     (eval-after-load "org"
+       '(progn
+	  (define-key org-mode-map (kbd "<C-S-up>") nil)
+	  (define-key org-mode-map (kbd "<C-S-down>") nil)
+	  (define-key org-mode-map (kbd "<C-S-left>") nil)
+	  (define-key org-mode-map (kbd "<C-S-right>") nil)))
+   #+end_src
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "<C-S-up>") 'shrink-window)
+     (global-set-key (kbd "<C-S-down>") 'enlarge-window)
+     (global-set-key (kbd "<C-S-left>") 'nil)
+     (global-set-key (kbd "<C-S-left>") 'shrink-window-horizontally)
+     (global-set-key (kbd "<C-S-right>") 'enlarge-window-horizontally)
+   #+END_SRC
+
+** Commands to halve the size of next window when split
+    #+BEGIN_SRC emacs-lisp
+      ;; (defun phils/halve-next-window-height ()
+      ;;   "Expand current window to take half of the next window's height"
+      ;;   (interactive)
+      ;;   (enlarge-window (/ (window-height (next-window)) 2)))
+      ;;
+      ;; (global-set-key (kbd "C-c n") 'phils/halve-next-window-height)
+      ;;
+      ;; (defun vjm/halve-next-window-width ()
+      ;;   "Expand current window to take half of the next window's height"
+      ;;   (interactive)
+      ;;   (enlarge-window-horizontally (/ (window-width (next-window)) 2)))
+      ;;
+      ;; (global-set-key (kbd "C-c f") 'vjm/halve-next-window-width)
+    #+END_SRC
+
 
 * General Settings
 ** Config Files
@@ -306,6 +409,12 @@ Interactively Do Things
   #+BEGIN_SRC emacs-lisp
     (setq-default fill-column 80)
   #+END_SRC
+
+*** Scroll by line (without moving point) with =M-p= and =M-n=
+    #+BEGIN_SRC emacs-lisp
+      (global-set-key (kbd "M-p") 'scroll-down-line)
+      (global-set-key (kbd "M-n") 'scroll-up-line)
+    #+END_SRC
 
 ** Uncategorized Settings
 *** Shortcut to open my personal command reference
