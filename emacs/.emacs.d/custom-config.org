@@ -315,6 +315,11 @@ Interactively Do Things
   #+END_SRC
 
 ** User Interface
+*** Start in fullscreen
+    #+begin_src emacs-lisp
+      (toggle-frame-maximized)
+    #+end_src
+
 *** Theme
   #+BEGIN_SRC emacs-lisp
     (load-theme 'tango-dark)
