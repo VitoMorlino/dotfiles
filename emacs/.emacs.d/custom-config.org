@@ -129,7 +129,7 @@ Interactively Do Things
    (require 'org-tempo)
    (add-to-list 'org-structure-template-alist
 	;;	'("el" .  "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC") ;; old structure
-		'("el" . "src emacs-lisp\n" )) ;; new structure
+		'("el" . "src emacs-lisp" )) ;; new structure
    #+END_SRC
 
 ** When editing a code snippet (with =C-c '=)
