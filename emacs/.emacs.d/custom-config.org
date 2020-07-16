@@ -204,6 +204,17 @@ Interactively Do Things
      (global-set-key (kbd "C-c |") 'vjm/create-hotkey-description-table)
    #+end_src
 
+** Enable/Configure =ox-latex= to export org files with LaTeX
+   #+begin_src emacs-lisp
+     (require 'ox-latex)
+     (unless (boundp 'org-latex-classes)
+       (setq org-latex-classes nil))
+     (add-to-list 'org-latex-classes
+		  '("article"
+		    "\\documentclass{article}"
+		    ("\\section{%s}" . "\\section*{%s}")))
+   #+end_src
+
 
 * Configure =org-capture=
    Capture lets you quickly store notes with little interruption of your work
