@@ -6,3 +6,5 @@ emacs/.emacs.d/**
 !emacs/.emacs.d/customize-auto-generated.el
 !emacs/.emacs.d/README_how-to-config.txt
 !emacs/.emacs.d/org-html-themes**
+
+.DS_Store

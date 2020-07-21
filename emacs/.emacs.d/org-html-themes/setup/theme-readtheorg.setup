@@ -3,8 +3,8 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/Users/User/.emacs.d/org-html-themes/styles/readtheorg/css/htmlize.css"/>
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/Users/User/.emacs.d/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
 
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="~/.emacs.d/org-html-themes/styles/readtheorg/css/htmlize.css"/>
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="~/.emacs.d/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/Users/vitomorlino/.emacs.d/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/Users/vitomorlino/.emacs.d/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
 
 
 
