@@ -1,6 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700);
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css);
 
+
+:root { /* Creating global variables */
+    --theme-color: rgb(75,25,125);
+    --theme-color-dark: rgb(50,0,75);
+    --theme-color-light: rgb(100,50,150);
+    --theme-color-lighter: rgb(125,75,175);
+    --theme-color-lightest: rgb(150,100,200);
+}
+
+
+
 h1,h2,h3,h4,h5,h6,legend{
     font-family:"Roboto Slab","ff-tisa-web-pro","Georgia",Arial,sans-serif;
     font-weight:700;
@@ -17,6 +28,7 @@ h1{
 
 h2{
     font-size:150%;
+    color: var(--theme-color-lighter);
 }
 
 h3{
@@ -36,7 +48,6 @@ h6{
 }
 
 h4,h5,h6{
-    color:#2980B9;
     font-weight:300;
 }
 
@@ -49,7 +60,7 @@ html{
 }
 
 body{
-    background:#edf0f2;
+    background: var(--theme-color-dark);
     color:#404040;
     font-family:"Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
     font-weight:normal;
@@ -436,7 +447,7 @@ table tr:nth-child(2n) td{
     }
 
     #toggle-sidebar h2 {
-        background-color:#2980B9;
+        background-color:var(--theme-color);
         width:100%;
         height:50px;
         left:0;
@@ -447,7 +458,7 @@ table tr:nth-child(2n) td{
         position:fixed;
         margin: 0;
         padding: 0;
-        opacity:0.7;
+        opacity:1.0;
         z-index: 10;
     }
 
@@ -770,17 +781,25 @@ hr{
     overflow-x:hidden;
     overflow-y:scroll;
     height:100%;
-    background:#343131;
+    background: black;
     z-index:200;
     scrollbar-base-color: #1F1D1D;
     scrollbar-arrow-color: #b3b3b3;
     scrollbar-shadow-color: #1F1D1D;
     scrollbar-track-color : #343131;
+
+
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and old-Edge (pre-2020) */
+    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+}
+
+#table-of-contents::-webkit-scrollbar {
+    display:none; /* Hide scrollbar for Chrome, Safari, Opera, and new-Edge (post-2020)*/
 }
 
 #table-of-contents h2{
     z-index:200;
-    background-color:#2980B9;
+    background-color:var(--theme-color); /* Top left bar */
     text-align:center;
     padding:0.809em;
     display:block;
@@ -809,17 +828,17 @@ ul.nav>li.active li.active {
 }
 
 ul.nav>li.active li.active>a {
-	color: black !important;
-    border-right:solid 1px #c9c9c9 !important;
+	color: var(--theme-color) !important;
+    border-right:solid 3px var(--theme-color) !important;
     font-weight: bold !important;
     display: block !important;
 }
 
 ul.nav>li.active>a {
-	background-color: #fcfcfc;
-	color: black !important;
-    border-bottom:solid 1px #c9c9c9 !important; /* XXX Restrict it to 2nd level */
-    border-right:solid 1px #c9c9c9 !important;
+	background-color: var(--theme-color);
+	color: white !important;
+   /*  border-bottom:solid 1px #c9c9c9 !important; */ /* XXX Restrict it to 2nd level */
+   /*  border-right:solid 1px #c9c9c9 !important; */
     font-weight: bold !important;
     display: block !important;
 }
@@ -925,7 +944,7 @@ footer p{
 #postamble .date {
     font-size: 90%;
     margin-bottom: 0px;
-    color: #27AE60;
+    color: gray;
 }
 
 #postamble .creator,#postamble .validation {
