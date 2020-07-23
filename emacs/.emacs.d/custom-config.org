@@ -99,9 +99,22 @@ Interactively Do Things
      (add-hook 'org-mode-hook 'org-bullets-mode))
  #+END_SRC
 
-** Automatically use =auto-fill-mode=
+** Automatically use =auto-fill-mode= or =visual-line-mode= when editing in =org-mode=
+   Warning: =auto-fill-mode= inserts a =line ending= at the word right before the value of =fill-column=
+
+   Alternatively, =visual-line-mode= wraps text in the buffer, but leaves the
+   file unchanged (doesn't add a =line ending= to the file)
+
+   =visual-fill-column-mode= is a small Emacs minor mode that mimics the effect of =fill-column= in =visual-line-mode=. Instead of wrapping lines at the window edge, which is the standard behaviour of =visual-line-mode=, it wraps lines at =fill-column=. If =fill-column= is too large for the window, the text is wrapped at the window edge.
+
    #+BEGIN_SRC emacs-lisp
-     (add-hook 'org-mode-hook 'turn-on-auto-fill)
+     ;; (add-hook 'org-mode-hook 'turn-on-auto-fill)
+     (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
+
+     (use-package visual-fill-column
+       :init
+       (add-hook 'org-mode-hook 'visual-fill-column-mode)
+       (add-hook 'visual-fill-column-mode-hook #'turn-on-visual-line-mode))
    #+END_SRC
 
 ** =<return>= automatically indents (swap with =C-j=)
