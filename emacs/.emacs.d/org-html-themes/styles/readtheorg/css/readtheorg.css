@@ -29,6 +29,7 @@ h1{
 h2{
     font-size:150%;
     color: var(--theme-color-lighter);
+    break-before: always;
 }
 
 h3{
