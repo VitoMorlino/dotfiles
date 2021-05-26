@@ -382,6 +382,11 @@ Interactively Do Things
     (define-key global-map (kbd "C-_") 'text-scale-decrease)
   #+END_SRC
 
+*** Display line numbers
+    #+begin_src emacs-lisp
+    (setq-default display-line-numbers t)
+    #+end_src
+
 ** Editing
 *** Add a newline to the bottom of a file if saved without one
   Sure, most things don't need a newline at the end of the file anymore...but,
