@@ -7,4 +7,6 @@ emacs/.emacs.d/**
 !emacs/.emacs.d/README_how-to-config.txt
 !emacs/.emacs.d/org-html-themes**
 
+
+# Ignore macOS's silly metadatas
 .DS_Store
