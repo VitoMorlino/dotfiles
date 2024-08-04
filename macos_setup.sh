@@ -10,6 +10,9 @@ packages_to_install=(
 	tmux
 )
 
+casks_to_install=(
+	neovide
+)
 
 # install homebrew
 
@@ -26,7 +29,7 @@ fi
 missing_packages=()
 
 for package_name in ${packages_to_install[*]}; do
-	if [ ! -e /usr/local/Cellar/$package_name ]
+	if [ ! -e /usr/local/Cellar/$package_name -a ! -e /usr/local/Caskroom/$package_name ]
 	then 
 		missing_packages+=($package_name)
 	else
@@ -34,10 +37,30 @@ for package_name in ${packages_to_install[*]}; do
 	fi
 done
 
+missing_casks=()
+
+for cask in ${casks_to_install}; do
+	if [ ! -e /usr/local/Caskroom/$cask ]
+	then 
+		missing_casks+=($cask)
+	else
+		echo $cask "is already installed"
+	fi
+done
+
+# if there are any missing packages, install them
 if [ ! ${#missing_packages[@]} -eq 0 ]
 then
 	brew install ${missing_packages[*]}
 	echo "installed missing packages: " ${missing_packages[*]}
+fi
+
+
+# if there are any missing casks, install them
+if [ ! ${#missing_casks[@]} -eq 0 ]
+then
+	brew install --cask ${missing_casks[*]}
+	echo "installed missing casks: " ${missing_casks[*]}
 fi
 
 
@@ -88,9 +111,12 @@ defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
 defaults write com.apple.finder AppleShowAllFiles -bool true
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
+
 # set hotkeys
+
 # note: if hotkeys are changed in system settings, enter this in a terminal in this directory:
 # defaults export com.apple.symbolichotkeys .etc/macOS/symbolichotkeys.plist
+
 if [ -e .etc/macOS/symbolichotkeys.plist ]
 then
 	defaults import com.apple.symbolichotkeys .etc/macOS/symbolichotkeys.plist
@@ -98,10 +124,23 @@ else
 	echo "couldn't find .etc/macOS/symbolichotkeys.plist"
 fi
 
+
+# set default open-with programs
+
+# note: if default programs are changed, enter this in a terminal in this directory:
+# defaults export com.apple.LaunchServices/com.apple.launchservices.secure.plist .etc/macOS/launchservices.secure.plist
+
+if [ -e .etc/macOS/symbolichotkeys.plist ]
+then
+	defaults import com.apple.LaunchServices/com.apple.launchservices.secure.plist .etc/macOS/launchservices.secure.plist
+else
+	echo "couldn't find .etc/macOS/launchservices.secure.plist"
+fi
+
 echo "finished setting macOS defaults"
 
 
-# install Apple Command Line Tools
+# install Apple Command Line Tools (required for tmux)
 
 xcode-select -p 1>/dev/null;has_xcode=$?
 
@@ -137,3 +176,4 @@ echo "
                          (_/"
 
 echo "setup complete"
+echo "NOTE: Neovide is not published by an apple-identified developer, so we'll have to allow it the first time it's opened."
