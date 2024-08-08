@@ -98,6 +98,13 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+-- Neovide doesn't change the working directory when opening a file from a file browser,
+-- so we tell neovim to automatically change directory to the open buffer, but only when in neovide
+--  This is helpful because Telescope uses the current working directory for a lot of its functions
+if vim.g.neovide then
+	vim.opt.autochdir = true
+end
+
 -- Make line numbers default
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -366,7 +373,7 @@ require("lazy").setup({
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+			vim.keymap.set("n", "<leader>sb", builtin.git_files, { desc = "[S]earch Current Git [B]ranch" })
 			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
@@ -374,6 +381,11 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+
+			-- Search files in home directory
+			vim.keymap.set("n", "<leader>sf", function()
+				builtin.find_files({ cwd = os.getenv("HOME") })
+			end, { desc = "[S]earch [F]iles" })
 
 			-- Slightly advanced example of overriding default behavior and theme
 			vim.keymap.set("n", "<leader>/", function()
