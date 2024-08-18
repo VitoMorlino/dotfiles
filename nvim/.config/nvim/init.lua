@@ -574,6 +574,9 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
+			-- add lsp capabilities for gdscript for godot
+			require("lspconfig").gdscript.setup(capabilities)
+
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 			--
@@ -626,6 +629,7 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
+				"gdtoolkit", -- linting and formatting for GodotScript
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -876,6 +880,9 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
+				"gdscript",
+				"godot_resource",
+				"gdshader",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,

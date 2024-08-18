@@ -12,6 +12,7 @@ packages_to_install=(
 
 casks_to_install=(
 	neovide
+	godot
 )
 
 # install homebrew
