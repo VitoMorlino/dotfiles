@@ -887,7 +887,9 @@ require("lazy").setup({
 				palettes = derp_colors.palettes,
 				specs = derp_colors.specs,
 			})
+
 			-- set the colorscheme AFTER options, styles, and palettes are setup
+			vim.cmd.colorscheme("duskfox")
 
 			-- You can configure highlights by doing something like:
 			-- vim.cmd.hi("Comment gui=italic")
