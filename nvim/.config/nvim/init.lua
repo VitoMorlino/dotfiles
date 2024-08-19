@@ -261,6 +261,34 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		event = "VimEnter",
+		config = function()
+			local harpoon = require("harpoon")
+			vim.keymap.set("n", "˙", function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end)
+			vim.keymap.set("n", "µ", function()
+				harpoon:list():add()
+			end)
+			vim.keymap.set("n", "∆", function()
+				harpoon:list():select(1)
+			end)
+			vim.keymap.set("n", "˚", function()
+				harpoon:list():select(2)
+			end)
+			vim.keymap.set("n", "¬", function()
+				harpoon:list():select(3)
+			end)
+			vim.keymap.set("n", "<Alt-;>", function()
+				harpoon:list():select(4)
+			end)
+		end,
+	},
+
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
 	--
 	-- This is often very useful to both group configuration, as well as handle
