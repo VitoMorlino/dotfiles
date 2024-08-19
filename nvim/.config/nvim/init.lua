@@ -262,6 +262,15 @@ require("lazy").setup({
 	},
 
 	{
+		"ahmedkhalf/project.nvim",
+		config = function()
+			require("project_nvim").setup({
+				-- config
+			})
+		end,
+	},
+
+	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -397,12 +406,12 @@ require("lazy").setup({
 			-- Enable Telescope extensions if they are installed
 			pcall(require("telescope").load_extension, "fzf")
 			pcall(require("telescope").load_extension, "ui-select")
+			pcall(require("telescope").load_extension, "projects")
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-			vim.keymap.set("n", "<leader>sb", builtin.git_files, { desc = "[S]earch Current Git [B]ranch" })
 			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
@@ -410,6 +419,9 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+			vim.keymap.set("n", "<leader>sp", function()
+				require("telescope").extensions.projects.projects({})
+			end, { desc = "[S]earch [P]rojects" })
 
 			-- Search files in home directory
 			vim.keymap.set("n", "<leader>sfh", function()
@@ -429,6 +441,15 @@ require("lazy").setup({
 			-- Search files tracked by git
 			vim.keymap.set("n", "<leader>sfg", builtin.git_files, { desc = "[S]earch [F]iles tracked by [G]it" })
 
+			-- Search files in project
+			vim.keymap.set("n", "<leader>sfp", function()
+				local project_root = require("project_nvim.project").get_project_root()
+				if project_root then
+					builtin.find_files({ cwd = project_root })
+				else
+					print("oops... not in a project")
+				end
+			end, { desc = "[S]earch [F]iles in [P]roject" })
 
 			-- Slightly advanced example of overriding default behavior and theme
 			vim.keymap.set("n", "<leader>/", function()
