@@ -316,6 +316,7 @@ require("lazy").setup({
 				{ "<leader>d", group = "[D]ocument" },
 				{ "<leader>r", group = "[R]ename" },
 				{ "<leader>s", group = "[S]earch" },
+				{ "<leader>sf", group = "[S]earch [F]iles" },
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
@@ -411,9 +412,23 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
 			-- Search files in home directory
-			vim.keymap.set("n", "<leader>sf", function()
+			vim.keymap.set("n", "<leader>sfh", function()
 				builtin.find_files({ cwd = os.getenv("HOME") })
-			end, { desc = "[S]earch [F]iles" })
+			end, { desc = "[S]earch [F]iles in [H]ome directory (WARNING: May take a minute)" })
+
+			-- Search files in dotfiles directory
+			vim.keymap.set("n", "<leader>sfd", function()
+				builtin.find_files({ cwd = os.getenv("HOME") .. "/dotfiles" })
+			end, { desc = "[S]earch [F]iles in [D]otfiles" })
+
+			-- Search files in neovim config directory
+			vim.keymap.set("n", "<leader>sfn", function()
+				builtin.find_files({ cwd = vim.fn.stdpath("config") })
+			end, { desc = "[S]earch [F]iles in [N]eovim config" })
+
+			-- Search files tracked by git
+			vim.keymap.set("n", "<leader>sfg", builtin.git_files, { desc = "[S]earch [F]iles tracked by [G]it" })
+
 
 			-- Slightly advanced example of overriding default behavior and theme
 			vim.keymap.set("n", "<leader>/", function()
