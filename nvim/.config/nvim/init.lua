@@ -900,8 +900,49 @@ require("lazy").setup({
 	{
 		"folke/todo-comments.nvim",
 		event = "VimEnter",
-		dependencies = { "nvim-lua/plenary.nvim" },
+		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
 		opts = { signs = false },
+
+		-- add to which-key's chains if which-key is available
+		init = function()
+			local ok, whichkey = pcall(require, "which-key")
+			if ok then
+				whichkey.add({ "<leader>sc", group = "[S]earch todo-[C]omments" })
+			else
+				print("no which-key")
+			end
+		end,
+
+		keys = {
+			{
+				"<leader>sca",
+				function()
+					vim.cmd("TodoTelescope")
+				end,
+				desc = "[S]earch todo-[C]omments [A]ll",
+			},
+			{
+				"<leader>sct",
+				function()
+					vim.cmd("TodoTelescope keywords=TODO")
+				end,
+				desc = "[S]earch todo-[C]omments tagged [T]odo",
+			},
+			{
+				"<leader>scw",
+				function()
+					vim.cmd("TodoTelescope keywords=WARN,WARNING")
+				end,
+				desc = "[S]earch todo-[C]omments tagged [W]arn",
+			},
+			{
+				"<leader>sch",
+				function()
+					vim.cmd("TodoTelescope keywords=HACK")
+				end,
+				desc = "[S]earch todo-[C]omments tagged [H]ack",
+			},
+		},
 	},
 
 	{ -- Collection of various small independent plugins/modules
