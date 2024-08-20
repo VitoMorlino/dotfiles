@@ -117,6 +117,8 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
 # note: if hotkeys are changed in system settings, enter this in a terminal in this directory:
 # defaults export com.apple.symbolichotkeys .etc/macOS/symbolichotkeys.plist
+#
+# or, run the helper file in .etc/macOS
 
 if [ -e .etc/macOS/symbolichotkeys.plist ]
 then
@@ -130,8 +132,10 @@ fi
 
 # note: if default programs are changed, enter this in a terminal in this directory:
 # defaults export com.apple.LaunchServices/com.apple.launchservices.secure.plist .etc/macOS/launchservices.secure.plist
+#
+# or, run the helper file in .etc/macOS
 
-if [ -e .etc/macOS/symbolichotkeys.plist ]
+if [ -e .etc/macOS/launchservices.secure.plist]
 then
 	defaults import com.apple.LaunchServices/com.apple.launchservices.secure.plist .etc/macOS/launchservices.secure.plist
 else
