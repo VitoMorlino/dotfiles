@@ -89,29 +89,30 @@ echo "setting macOS defaults..."
 defaults write -g com.apple.swipescrolldirection -bool false
 
 defaults write NSGlobalDomain com.apple.mouse.scaling -float "1.5"	# cursor speed (default 1.0)
-defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
-defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
-defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool "false"
+defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool "false"
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool "false"
+defaults write NSGlobalDomain AppleShowAllExtensions -bool "true"
 defaults write NSGlobalDomain AppleHighlightColor -string "0.5 0.5 1.0"
-defaults write NSGlobalDomain AppleAccentColor -int 5
+defaults write NSGlobalDomain AppleAccentColor -int "5"
 
-defaults write com.apple.dock autohide -bool false
-defaults write com.apple.dock orientation -string left
+defaults write com.apple.dock autohide -bool "false"
+defaults write com.apple.dock orientation -string "left"
 
 defaults write com.apple.screencapture location -string "$HOME/Desktop"
-defaults write com.apple.screencapture disable-shadow -bool true
+defaults write com.apple.screencapture disable-shadow -bool "true"
 defaults write com.apple.screencapture type -string "png"
 
-defaults write com.apple.finder ShowPathbar -bool true
-defaults write com.apple.finder DisableAllAnimations -bool true
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool false
-defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
-defaults write com.apple.finder ShowMountedServersOnDesktop -bool false
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
-defaults write com.apple.finder AppleShowAllFiles -bool true
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
-
+defaults write com.apple.finder "ShowPathbar" -bool "true"
+defaults write com.apple.finder "DisableAllAnimations" -bool "true"
+defaults write com.apple.finder "ShowExternalHardDrivesOnDesktop" -bool "false"
+defaults write com.apple.finder "ShowHardDrivesOnDesktop" -bool "false"
+defaults write com.apple.finder "ShowMountedServersOnDesktop" -bool "false"
+defaults write com.apple.finder "ShowRemovableMediaOnDesktop" -bool "false"
+defaults write com.apple.finder "AppleShowAllFiles" -bool "true"
+defaults write com.apple.finder "FXPreferredViewStyle" -string "Nlsv"
+defaults write com.apple.finder "_FXSortFoldersFirstOnDesktop" -bool "true"
+defaults write com.apple.finder "_FXSortFoldersFirst" -bool "false"
 
 # set hotkeys
 
