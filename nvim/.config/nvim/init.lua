@@ -100,11 +100,23 @@ vim.g.have_nerd_font = false
 
 vim.opt.termguicolors = true
 
--- Neovide doesn't change the working directory when opening a file from a file browser,
--- so we tell neovim to automatically change directory to the open buffer, but only when in neovide
---  This is helpful because Telescope uses the current working directory for a lot of its functions
+-- this block is only run if we're in the Neovide application (instead of a terminal)
 if vim.g.neovide then
+	-- Neovide doesn't change the working directory when opening a file from a file browser,
+	-- so we tell neovim to automatically change directory to the open buffer, but only when in neovide
+	--  This is helpful because Telescope uses the current working directory for a lot of its functions
 	vim.opt.autochdir = true
+
+	vim.g.neovide_scale_factor = 1.0
+	local change_scale_factor = function(delta)
+		vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+	end
+	vim.keymap.set("n", "<C-+>", function()
+		change_scale_factor(1.25)
+	end)
+	vim.keymap.set("n", "<C-->", function()
+		change_scale_factor(1 / 1.25)
+	end)
 end
 
 -- Make line numbers default
