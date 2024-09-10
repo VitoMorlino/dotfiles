@@ -4,10 +4,12 @@
 # add homebrew package names to the below list and they'll be installed if missing
 
 packages_to_install=(
+	git
 	neovim
 	stow
 	ripgrep
 	tmux
+	go
 )
 
 casks_to_install=(
@@ -136,7 +138,7 @@ fi
 #
 # or, run the helper file in .etc/macOS
 
-if [ -e .etc/macOS/launchservices.secure.plist]
+if [ -e .etc/macOS/launchservices.secure.plist ]
 then
 	defaults import com.apple.LaunchServices/com.apple.launchservices.secure.plist .etc/macOS/launchservices.secure.plist
 else
