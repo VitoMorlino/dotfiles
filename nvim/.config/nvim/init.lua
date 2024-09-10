@@ -441,6 +441,14 @@ require("lazy").setup({
 				--   },
 				-- },
 				-- pickers = {}
+				pickers = {
+					find_files = {
+						find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
+						layout_config = {
+							height = 0.70,
+						},
+					},
+				},
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
