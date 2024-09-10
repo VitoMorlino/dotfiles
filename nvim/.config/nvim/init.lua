@@ -111,6 +111,12 @@ end
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- visually wrap lines
+-- to set this per-buffer on the fly, use :setlocal wrap or :setlocal nowrap
+vim.opt.wrap = false
+-- wrap by word instead of character
+vim.opt.linebreak = true
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
 
