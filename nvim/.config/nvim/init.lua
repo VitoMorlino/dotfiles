@@ -107,7 +107,13 @@ if vim.g.neovide then
 	--  This is helpful because Telescope uses the current working directory for a lot of its functions
 	vim.opt.autochdir = true
 
-	vim.g.neovide_scale_factor = 1.0
+	-- change scale factor by default if we're on windows
+	if vim.uv.os_uname().sysname == "Windows_NT" then
+		vim.g.neovide_scale_factor = 0.75
+	else
+		vim.g.neovide_scale_factor = 1.0
+	end
+
 	local change_scale_factor = function(delta)
 		vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
 	end
@@ -440,7 +446,6 @@ require("lazy").setup({
 				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
 				--   },
 				-- },
-				-- pickers = {}
 				pickers = {
 					find_files = {
 						find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
