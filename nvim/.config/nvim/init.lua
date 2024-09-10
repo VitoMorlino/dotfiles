@@ -262,6 +262,20 @@ require("lazy").setup({
 	},
 
 	{
+		-- https://github.com/MeanderingProgrammer/render-markdown.nvim/wiki
+		-- check above wiki for setup and options
+		"MeanderingProgrammer/render-markdown.nvim",
+		opts = {
+			sign = {
+				enabled = false,
+			},
+		},
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+	},
+
+	{
 		"ahmedkhalf/project.nvim",
 		config = function()
 			require("project_nvim").setup({
