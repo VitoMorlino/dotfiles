@@ -3,3 +3,8 @@
 [user]
 	name = Vito Morlino
 	email = vjmorlino@gmail.com
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
