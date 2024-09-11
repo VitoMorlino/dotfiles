@@ -90,6 +90,8 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+local is_mac = vim.uv.os_uname().sysname == "darwin"
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
@@ -348,24 +350,45 @@ require("lazy").setup({
 		event = "VimEnter",
 		config = function()
 			local harpoon = require("harpoon")
-			vim.keymap.set("n", "˙", function()
-				harpoon.ui:toggle_quick_menu(harpoon:list())
-			end)
-			vim.keymap.set("n", "µ", function()
-				harpoon:list():add()
-			end)
-			vim.keymap.set("n", "∆", function()
-				harpoon:list():select(1)
-			end)
-			vim.keymap.set("n", "˚", function()
-				harpoon:list():select(2)
-			end)
-			vim.keymap.set("n", "¬", function()
-				harpoon:list():select(3)
-			end)
-			vim.keymap.set("n", "<Alt-;>", function()
-				harpoon:list():select(4)
-			end)
+			if is_mac then
+				vim.keymap.set("n", "˙", function()
+					harpoon.ui:toggle_quick_menu(harpoon:list())
+				end)
+				vim.keymap.set("n", "µ", function()
+					harpoon:list():add()
+				end)
+				vim.keymap.set("n", "∆", function()
+					harpoon:list():select(1)
+				end)
+				vim.keymap.set("n", "˚", function()
+					harpoon:list():select(2)
+				end)
+				vim.keymap.set("n", "¬", function()
+					harpoon:list():select(3)
+				end)
+				vim.keymap.set("n", "<Alt-;>", function()
+					harpoon:list():select(4)
+				end)
+			else
+				vim.keymap.set("n", "<M-h>", function()
+					harpoon.ui:toggle_quick_menu(harpoon:list())
+				end)
+				vim.keymap.set("n", "<M-m>", function()
+					harpoon:list():add()
+				end)
+				vim.keymap.set("n", "<M-j>", function()
+					harpoon:list():select(1)
+				end)
+				vim.keymap.set("n", "<M-k>", function()
+					harpoon:list():select(2)
+				end)
+				vim.keymap.set("n", "<M-l>", function()
+					harpoon:list():select(3)
+				end)
+				vim.keymap.set("n", "<M-;>", function()
+					harpoon:list():select(4)
+				end)
+			end
 		end,
 	},
 
