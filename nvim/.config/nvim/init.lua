@@ -188,6 +188,17 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+vim.cmd([[
+augroup FileTypeSettings
+    autocmd!
+    autocmd BufEnter * lua if vim.bo.filetype == 'markdown' then MarkdownSettings() end
+augroup END
+]])
+
+function MarkdownSettings()
+	vim.opt_local.wrap = true
+end
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
