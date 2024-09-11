@@ -255,6 +255,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+-- tell neovim that http files are http files
+vim.filetype.add({
+	extension = {
+		["http"] = "http",
+	},
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -281,6 +288,22 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
+
+	{
+		"mistweaverco/kulala.nvim",
+		opts = {},
+		keys = {
+			{
+				"<CR>",
+				function()
+					require("kulala").run()
+				end,
+				mode = "n",
+				ft = "http",
+				desc = "run the request under the cursor",
+			},
+		},
+	},
 
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
