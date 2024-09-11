@@ -129,6 +129,15 @@ end
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- use 4 spaces instead of tab
+vim.opt.tabstop = 4
+-- cause <Tab> and <BS> to insert or delete the correct number of spaces
+vim.opt.softtabstop = 4
+-- expand tab characters into a number of spaces
+vim.opt.expandtab = true
+-- the number of spaces to be used for indentation
+vim.opt.shiftwidth = 4
+
 -- visually wrap lines
 -- to set this per-buffer on the fly, use :setlocal wrap or :setlocal nowrap
 vim.opt.wrap = false
