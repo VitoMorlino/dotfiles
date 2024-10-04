@@ -100,6 +100,12 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+-- disable netrw (the default vim file explorer) so nvim-tree can take over
+-- we don't need these lines anymore if we get rid of nvim-tree
+-- note: oil.nvim doesn't need netrw to be disabled manually
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.opt.termguicolors = true
 
 -- this block is only run if we're in the Neovide application (instead of a terminal)
@@ -203,6 +209,7 @@ vim.cmd([[
 augroup FileTypeSettings
     autocmd!
     autocmd BufEnter * lua if vim.bo.filetype == 'markdown' then MarkdownSettings() end
+    autocmd BufEnter * lua if vim.bo.filetype == 'text' then MarkdownSettings() end
 augroup END
 ]])
 
@@ -288,6 +295,75 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
+
+	"tpope/vim-dadbod",
+	"kristijanhusak/vim-dadbod-ui",
+	"kristijanhusak/vim-dadbod-completion",
+
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+			"stevearc/oil.nvim",
+			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+		},
+		opts = {
+			filesystem = {
+				components = {
+					-- abbreviate path to a number of characters
+					name = function(config, node, state)
+						local num_characters = 3
+						local components = require("neo-tree.sources.common.components")
+						local name = components.name(config, node, state)
+						if node:get_depth() == 1 then
+							name.text = vim.fn.pathshorten(name.text, num_characters)
+						end
+						return name
+					end,
+				},
+				filtered_items = {
+					-- show filtered items, but display them differently to differentiate
+					visible = true,
+				},
+			},
+			window = {
+				width = 30,
+			},
+		},
+		keys = {
+			{
+				"<leader>te",
+				"<cmd>Neotree toggle action=show<CR>",
+				desc = "[T]oggle [E]xplorer sidebar",
+			},
+		},
+	},
+
+	{ -- oil.nvim replaces netrw as the file explorer/editor
+		"stevearc/oil.nvim",
+		opts = {
+			view_options = {
+				show_hidden = true,
+			},
+			float = {
+				max_width = 50,
+				max_height = 25,
+			},
+			keymaps = {
+				["<esc>"] = "actions.close",
+			},
+		},
+		keys = {
+			{
+				"<leader>e",
+				"<cmd>Oil --float<CR>",
+				desc = "[E]dit directory",
+			},
+		},
+	},
 
 	{
 		"mistweaverco/kulala.nvim",
@@ -412,6 +488,12 @@ require("lazy").setup({
 					harpoon:list():select(4)
 				end)
 			end
+			harpoon:setup({
+				settings = {
+					save_on_toggle = true,
+					save_on_close = true,
+				},
+			})
 		end,
 	},
 
@@ -507,17 +589,23 @@ require("lazy").setup({
 				-- You can put your default mappings / updates / etc. in here
 				--  All the info you're looking for is in `:help telescope.setup()`
 				--
-				-- defaults = {
-				--   mappings = {
-				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-				--   },
-				-- },
+				defaults = {
+					--   mappings = {
+					--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+					--   },
+				},
 				pickers = {
 					find_files = {
+						defaults = {},
 						find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
 						layout_config = {
 							height = 0.70,
 						},
+						-- no_ignore = true means telescope will not respect .gitignore rules
+						-- i want to be able to find_files that are not tracked by git
+						-- use builtin.gitfiles to only find_files tracked by git
+						-- "no ignoring files ignored by git"
+						no_ignore = true,
 					},
 				},
 				extensions = {
@@ -993,6 +1081,14 @@ require("lazy").setup({
 					{ name = "luasnip" },
 					{ name = "path" },
 				},
+
+				-- setup vim-dadbod completion
+				cmp.setup.filetype({ "sql" }, {
+					sources = {
+						{ name = "vim-dadbod-completion" },
+						{ name = "buffer" },
+					},
+				}),
 			})
 		end,
 	},
@@ -1123,6 +1219,7 @@ require("lazy").setup({
 				"c",
 				"diff",
 				"go",
+				"gomod",
 				"html",
 				"lua",
 				"luadoc",
