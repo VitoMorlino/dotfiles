@@ -330,6 +330,7 @@ require("lazy").setup({
 				},
 			},
 			window = {
+				position = "right",
 				width = 30,
 			},
 		},
