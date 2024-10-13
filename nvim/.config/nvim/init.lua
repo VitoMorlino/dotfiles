@@ -90,7 +90,7 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-local is_mac = vim.uv.os_uname().sysname == "darwin"
+local is_mac = vim.uv.os_uname().sysname == "Darwin"
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
@@ -331,7 +331,7 @@ require("lazy").setup({
 			},
 			window = {
 				position = "right",
-				width = 30,
+				width = 50,
 			},
 		},
 		keys = {
@@ -411,6 +411,21 @@ require("lazy").setup({
 		-- https://github.com/MeanderingProgrammer/render-markdown.nvim/wiki
 		-- check above wiki for setup and options
 		"MeanderingProgrammer/render-markdown.nvim",
+		init = function()
+			-- highlight group options:
+			-- https://github.com/MeanderingProgrammer/render-markdown.nvim?tab=readme-ov-file#colors
+			local lightPurple = "#cc99ff"
+			vim.cmd([[ 
+        highlight RenderMarkdownH1Bg guifg=#cc99ff
+        highlight RenderMarkdownH2Bg guifg=#cc99ff
+        highlight RenderMarkdownH3Bg guifg=#cc99ff
+        highlight RenderMarkdownH4Bg guifg=#cc99ff
+        highlight RenderMarkdownH5Bg guifg=#cc99ff
+        highlight RenderMarkdownH6Bg guifg=#cc99ff
+      ]])
+			-- override markdown Title highlight to match this plugin's highlights
+			vim.cmd.highlight({ "Title", "guifg=" .. lightPurple })
+		end,
 		opts = {
 			sign = {
 				enabled = false,
