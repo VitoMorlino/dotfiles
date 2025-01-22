@@ -301,6 +301,28 @@ require("lazy").setup({
 	"kristijanhusak/vim-dadbod-completion",
 
 	{
+		"mfussenegger/nvim-dap",
+		config = function()
+			local dap = require("dap")
+			dap.adapters.godot = {
+				type = "server",
+				host = "127.0.0.1",
+				port = 6006,
+			}
+
+			dap.configurations.gdscript = {
+				{
+					type = "godot",
+					request = "launch",
+					name = "Launch scene",
+					project = "${workspaceFolder}",
+					launch_scene = true,
+				},
+			}
+		end,
+	},
+
+	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
 		dependencies = {
@@ -863,7 +885,11 @@ require("lazy").setup({
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			-- add lsp capabilities for gdscript for godot
-			require("lspconfig").gdscript.setup(capabilities)
+			-- require("lspconfig").gdscript.setup(capabilities)
+			require("lspconfig")["gdscript"].setup({
+				name = "godot",
+				cmd = { "ncat", "127.0.0.1", "6005" },
+			})
 
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -874,6 +900,7 @@ require("lazy").setup({
 			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
 			local servers = {
 				-- clangd = {},
 				gopls = {
@@ -929,7 +956,7 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
-				"gdtoolkit", -- linting and formatting for GodotScript
+				-- "gdtoolkit", -- linting and formatting for GodotScript
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -1244,7 +1271,7 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
-				"gdscript",
+				-- "gdscript",
 				"godot_resource",
 				"gdshader",
 			},
