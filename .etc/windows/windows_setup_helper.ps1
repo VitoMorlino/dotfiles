@@ -1,11 +1,22 @@
+# add chocolatey packages to this list to be installed
+$chocopacks = 
+	"git",
+	"neovim",
+	"ripgrep",
+	"neovide",
+	"golang",
+	"sqlite",
+	"mingw"
+
 # Install chocolatey packages (-y confirms running scripts without requiring user input)
-choco install -y git neovim ripgrep
+choco install -y $chocopacks
 
 
 # Linked Files (Destination => Source)
 $symlinks = @{
 	"$HOME\AppData\Local\nvim"			= ".\nvim\.config\nvim"
-	"$HOME\.gitconfig"					= ".\git\.gitconfig"
+	"$HOME\.gitconfig"				= ".\git\.gitconfig"
+	"$HOME\bin"					= ".\bin"
 }
 
 
@@ -27,6 +38,16 @@ foreach ($symlink in $symlinks.GetEnumerator()) {
 	Write-Host "`t[++] symlinking" $symlink.Key
 }
 Write-Host "`nSymbolic Links Created"
+
+
+# add my bin folder to Windows's PATH variable
+$binPath = "$HOME\bin"
+$scope = "User" # scope options: "Process", "User", "Machine"
+$regexEscapedPath = [regex]::Escape($binPath)
+$pathArray = [System.Environment]::GetEnvironmentVariable('PATH', $scope) -split ';'
+$pathArray = $pathArray | Where-Object { $_ -notMatch "^$regexEscapedPath\\?" }
+$newPath = ($pathArray + $binPath) -join ';'
+[System.Environment]::SetEnvironmentVariable('PATH', $newPath, $scope)
 
 
 Write-Host "
