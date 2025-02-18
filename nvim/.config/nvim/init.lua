@@ -1065,6 +1065,10 @@ require("lazy").setup({
 					--   end,
 					-- },
 				},
+				config = function()
+					require("luasnip.loaders.from_lua").load({ paths = { "./snippets" } })
+					require("luasnip").enable_autosnippets = true
+				end,
 			},
 			"saadparwaiz1/cmp_luasnip",
 
