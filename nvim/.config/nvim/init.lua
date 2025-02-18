@@ -210,6 +210,7 @@ augroup FileTypeSettings
     autocmd!
     autocmd BufEnter * lua if vim.bo.filetype == 'markdown' then MarkdownSettings() end
     autocmd BufEnter * lua if vim.bo.filetype == 'text' then MarkdownSettings() end
+    autocmd BufEnter * lua if vim.bo.filetype == 'vimwiki' then MarkdownSettings() end
 augroup END
 ]])
 
@@ -299,6 +300,25 @@ require("lazy").setup({
 	"tpope/vim-dadbod",
 	"kristijanhusak/vim-dadbod-ui",
 	"kristijanhusak/vim-dadbod-completion",
+
+	{
+		"vimwiki/vimwiki",
+		init = function()
+			vim.g.vimwiki_global_ext = 0 -- 0 means don't treat non-wiki files as vimwiki files
+			vim.g.vimwiki_ext2syntax = {
+				[".md"] = "markdown",
+				[".markdown"] = "markdown",
+				[".mdown"] = "markdown",
+			}
+
+			local life_wiki = {}
+			life_wiki.path = "~/lifeOS/"
+			life_wiki.index = "lifeOS"
+			life_wiki.ext = ".md"
+			life_wiki.syntax = "markdown"
+			vim.g.vimwiki_list = { life_wiki }
+		end,
+	},
 
 	{
 		"mfussenegger/nvim-dap",
@@ -563,7 +583,7 @@ require("lazy").setup({
 				{ "<leader>r", group = "[R]ename" },
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>sf", group = "[S]earch [F]iles" },
-				{ "<leader>w", group = "[W]orkspace" },
+				{ "<leader>w", group = "[W]orkspace / [W]iki" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 			})
@@ -683,6 +703,11 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sfd", function()
 				builtin.find_files({ cwd = os.getenv("HOME") .. "/dotfiles" })
 			end, { desc = "[S]earch [F]iles in [D]otfiles" })
+
+			-- Search files in lifeOS
+			vim.keymap.set("n", "<leader>sfl", function()
+				builtin.find_files({ cwd = os.getenv("HOME") .. "/lifeOS" })
+			end, { desc = "[S]earch [F]iles in [L]ifeOS" })
 
 			-- Search files in neovim config directory
 			vim.keymap.set("n", "<leader>sfn", function()
@@ -960,6 +985,7 @@ require("lazy").setup({
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
+			---@diagnostic disable-next-line: missing-fields --disables warnings about missing fields, but only for this line
 			require("mason-lspconfig").setup({
 				handlers = {
 					function(server_name)
