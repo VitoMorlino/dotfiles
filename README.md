@@ -19,23 +19,25 @@ I'm currently working on the Windows setup script (for the forseeable future - s
 ## possible future plans (or "nice to have")
 - tbd
 
-## how to install (Windows)
-- _if you're me_:
+# how to install (Windows)
+### _if you're me_:
   1. open cmd or powershell and run the following commands
   2. install git with `winget install --id Git.Git -e --source winget`
   3. `cd` to where you want this repo to live
   4. clone this repo with `git clone https://github.com/VitoMorlino/dotfiles.git`
   5. run the setup script with `.\setup_windows`
 
-  Note: git might get angy about dubious ownership of the repo when running terminal as Admin vs User or on a new machine. Here are a couple solutions I've found:
-  - the automatically-provided solution is to mark the directory as "safe" in the .gitconfig
-  - another solution is to take ownership of the files by running `takeown /f .\dotfiles /r` in powershell (f = file, r = recursive) (change file path as necessary)
+  * Note: git might get angy about dubious ownership of the repo when running terminal (or github-desktop) as Admin vs User or on a new machine. Here are a couple solutions I've found:
+    - the automatically-provided solution is to mark the directory as "safe" in the .gitconfig
+    - another solution is to take ownership of the files by running `takeown /f .\dotfiles /r` in powershell (f = file, r = recursive) (change file path as necessary)
 
-- _if you're not me_, warning, this is for my specific setup and might not work for you.
-  - if you still want to use this repo and tailor it to your needs:
-  1. download a zip of this repo with the green "Code" button at the top right of the github page or run one of the following commands in your command line tool:
-    - `wget https://github.com/VitoMorlino/dotfiles/archive/master.zip`
-    - `curl -L -O https://github.com/VitoMorlino/dotfiles/archive/master.zip`
+### _if you're not me_:
+>[!Warning]
+>this is for my specific setup and might not work for you.  
+>If you still want to use this repo and tailor it to your needs:
+  1. download a zip of this repo with the green "Code" button at the top right of the github page or run one of the following commands in your command line tool:  
+    - `wget https://github.com/VitoMorlino/dotfiles/archive/master.zip`  
+    - `curl -L -O https://github.com/VitoMorlino/dotfiles/archive/master.zip`  
   2. unzip with `tar -xf .\dotfiles-master.zip` (note: the file name may need to be changed to match the zip file you downloaded
   3. examine the setup script to ensure it's not going to change things you don't want it to change
   4. run the setup script with `.\setup_windows`
