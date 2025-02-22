@@ -14,24 +14,28 @@ I'm working on a way to automate setting up a new machine by running a script th
 
 The macOS script is a bit more fleshed out (as of feb 19 2025) than Windows because I was working mostly from macOS when I started building this automation pipeline, but I don't plan on continuing to update it. It should still work in its current state, but I won't be keeping up with it, so it might break in the future.
 
-I'm currently working on the Windows setup script (for the forseeable future - sorry btw-ers, it makes game development easier). The next step is going to be setting Windows's settings to my liking by setting registry values.
+I'm currently working on the Windows setup script (for the forseeable future - sorry btw-ers, it makes game development easier). The next step is going to be changing Windows's settings to my liking with the registry
 
 ## possible future plans (or "nice to have")
 - tbd
 
-## how to install
-- if you're me:
-  ```
-  [install git]
-  [clone this repo]
-  [run the setup file]
-  ```
-- if you're not me, warning, this is for my specific setup and might not work for you.
-  - if you still want to use this repo:
-    ```
-    [download zip of this repo]
-    [unzip to where you want the repo]
-    [examine the setup script to make sure it's not going to change things you don't want it to change]
-    [run the setup file]
-    [keep your own separate repo like this]
-    ```
+## how to install (Windows)
+- _if you're me_:
+  1. open cmd or powershell and run the following commands
+  2. install git with `winget install --id Git.Git -e --source winget`
+  3. `cd` to where you want this repo to live
+  4. clone this repo with `git clone https://github.com/VitoMorlino/dotfiles.git`
+  5. run the setup script with `.\setup_windows`
+
+  Note: git might get angy about dubious ownership of the repo when running terminal as Admin vs User or on a new machine. Here are a couple solutions I've found:
+  - the automatically-provided solution is to mark the directory as "safe" in the .gitconfig
+  - another solution is to take ownership of the files by running `takeown /f .\dotfiles /r` in powershell (f = file, r = recursive) (change file path as necessary)
+
+- _if you're not me_, warning, this is for my specific setup and might not work for you.
+  - if you still want to use this repo and tailor it to your needs:
+  1. download a zip of this repo with the green "Code" button at the top right of the github page or run one of the following commands in your command line tool:
+    - `wget https://github.com/VitoMorlino/dotfiles/archive/master.zip`
+    - `curl -L -O https://github.com/VitoMorlino/dotfiles/archive/master.zip`
+  2. unzip with `tar -xf .\dotfiles-master.zip` (note: the file name may need to be changed to match the zip file you downloaded
+  3. examine the setup script to ensure it's not going to change things you don't want it to change
+  4. run the setup script with `.\setup_windows`
