@@ -1,12 +1,15 @@
 # add chocolatey packages to this list to be installed
 $chocopacks = 
-	"git",
 	"neovim",
 	"ripgrep",
-	"neovide",
 	"golang",
 	"sqlite",
-	"mingw"
+	"mingw",
+	"neovide",
+	"github-desktop",
+	"discord",
+	"steam",
+	"nvidia-app"
 
 # Install chocolatey packages (-y confirms running scripts without requiring user input)
 choco install -y $chocopacks
@@ -48,6 +51,12 @@ $pathArray = [System.Environment]::GetEnvironmentVariable('PATH', $scope) -split
 $pathArray = $pathArray | Where-Object { $_ -notMatch "^$regexEscapedPath\\?" }
 $newPath = ($pathArray + $binPath) -join ';'
 [System.Environment]::SetEnvironmentVariable('PATH', $newPath, $scope)
+
+
+# add HOME as an environment variable
+$homeLoc = "C:\Users\vjmor"
+[System.Environment]::SetEnvironmentVariable('HOME', $homeLoc, $scope)
+
 
 
 Write-Host "
