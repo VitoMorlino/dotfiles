@@ -36,7 +36,7 @@ REM we're installing chocolatey here, before running the ps1 file, as an alterna
 REM reloading the file, to ensure chocolatey's environment variables are set before
 REM using it to install packages
 
-winget install chocolatey
+winget install chocolatey --accept-source-agreements
 
 
 REM finally, we launch the powershell file that will do the rest of the setup process
