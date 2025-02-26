@@ -1,4 +1,58 @@
 ######
+### Debloat Windows by uninstalling default apps that I don't want
+######
+
+# NOTE: to see a list of all currently installed packages, run the following in powershell:
+# Get-AppxPackage | Select Name, PackageFullName | Out-Host
+
+# NOTE: add package names to this list to be uninstalled
+$appsToUninstall = 
+	"Microsoft.OneDriveSync",
+	"Microsoft.YourPhone",
+	"Microsoft.WindowsCamera",
+	"Microsoft.BingSearch",
+	"Microsoft.MicrosoftSolitaireCollection",
+	"Clipchamp.Clipchamp",
+	"Microsoft.ZuneMusic",
+	"Microsoft.BingNews",
+	"Microsoft.Todos",
+	"Microsoft.WindowsFeedbackHub",
+	"Microsoft.StickyNotes",
+	"MSTeams",
+	"Microsoft.MicrosoftEdge.Stable"
+
+$failedUninstalls = @()
+foreach ($app in $appsToUninstall) {
+	# Get the package, if it exists
+        $package = Get-AppxPackage | Where-Object { $_.Name -eq $app -or $_.PackageFullName -eq $app }
+		
+        if ($package) {
+		try {
+		        $package | Remove-AppxPackage -ErrorAction Stop
+		} catch {
+			Write-Host "Error while trying to uninstall $($line): $_"
+			$failedUninstalls += $app
+		}
+        } else {
+		$failedUninstalls += $app
+        }
+    }
+}
+
+# If there were unsuccessful attempts, print a warning
+if ($failedUninstalls) {
+	Write-Host "WARNING: The following packages were not found and could not be uninstalled:"
+
+	# Print each package name that was not found
+	foreach ($package in $failedUninstalls) {
+		Write-Host "`t$package"
+	}
+}
+
+Write-Host "Finished uninstalling bloat"
+
+
+######
 ### Install packages
 ######
 
