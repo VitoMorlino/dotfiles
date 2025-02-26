@@ -1,4 +1,9 @@
-# add chocolatey packages to this list to be installed
+######
+### Install packages
+######
+
+# NOTE: add chocolatey packages to this list to be installed
+# find package names at https://community.chocolatey.org/packages
 $chocopacks = 
 	"neovim",
 	"ripgrep",
@@ -11,9 +16,13 @@ $chocopacks =
 	"steam",
 	"nvidia-app"
 
-# Install chocolatey packages (-y confirms running scripts without requiring user input)
+# (-y confirms running scripts without requiring user input)
 choco install -y $chocopacks
 
+
+######
+### Symlink files and directories to where they're expected to live
+######
 
 # Linked Files (Destination => Source)
 $symlinks = @{
@@ -43,6 +52,42 @@ foreach ($symlink in $symlinks.GetEnumerator()) {
 Write-Host "`nSymbolic Links Created"
 
 
+######
+### Configure Windows's settings by changing registry values
+######
+
+# look for seekerfox usb drive
+$seekerFox = Get-WmiObject -Class Win32_Volume -Filter "Label = 'SeekerFox2'"
+$seekerFoxDriveLetter = $null
+if ($seekerFox) {
+	#Select-Object -InputObject $seekerFox -ExpandProperty SerialNumber
+	$seekerFoxDriveLetter = Select-Object -InputObject $seekerFox -ExpandProperty DriveLetter
+} else {
+	Write-Host "SeekerFox not found"
+}
+
+# make a backup file of the windows settings portion of the registry
+if (Test-Path -Path "$seekerFoxDriveLetter\") {
+	$timestamp = Get-Date -Format "yyyy MM dd HH:mm" | ForEach-Object { $_ -replace ":", "."  -replace " ", "." }
+	$registryBackupFileName = "registry_before_setup_$timestamp.reg"
+	$registryBackupDirName = "registry_backups"
+	$registryBackupFilePath = "$seekerFoxDriveLetter\$registryBackupDirName\$registryBackupFileName"
+
+	# create the directory if it doesn't exist
+	[System.IO.Directory]::CreateDirectory("$seekerFoxDriveLetter\$registryBackupDirName")
+
+	reg export "HKCU\Software\Microsoft\Windows\CurrentVersion" $registryBackupFilePath
+} else {
+	# TODO: make the backup folder at $HOME
+}
+
+# TODO: add all my registry edits
+
+
+######
+### Set up environment variables
+######
+
 # add my bin folder to Windows's PATH variable
 $binPath = "$HOME\bin"
 $scope = "User" # scope options: "Process", "User", "Machine"
@@ -54,9 +99,17 @@ $newPath = ($pathArray + $binPath) -join ';'
 
 
 # add HOME as an environment variable
-$homeLoc = "C:\Users\vjmor"
-[System.Environment]::SetEnvironmentVariable('HOME', $homeLoc, $scope)
+[System.Environment]::SetEnvironmentVariable('HOME', $HOME, $scope)
 
+
+######
+### Set up personal folders in home folder
+######
+
+# TODO: 
+# - check for seekerfox drive
+# - git clone seekerfox\lifeOS to ~\lifeOS
+# - create folder ~\projects
 
 
 Write-Host "
