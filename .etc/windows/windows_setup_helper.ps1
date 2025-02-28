@@ -167,6 +167,22 @@ $newPath = ($pathArray + $binPath) -join ';'
 # - git clone seekerfox\lifeOS to ~\lifeOS
 # - create folder ~\projects
 
+# HACK: There is an issue with installing some newer versions of discord (as of 1.0.9184) from the command line
+# where a fatal error will occur on launch.
+# A workaround for now is to:
+# - delete "~/AppData/Local/Discord/installer.db"
+# - copy "~/AppData/Local/Discord/app-1.0.9184/installer.db" to "~/AppData/Local/Discord/"
+# The following script will find those files and take care of that.
+Write-Host "Fixing discord's install. Hopefully in future versions, we won't have to do this."
+$discordFixPath = ".\.etc\windows\discord_install_fix.ps1"
+if (Test-Path -Path $discordFixPath) {
+	# run the script
+	&$discordFixPath
+} else {
+	Write-Host "couldn't find $discordFixPath"
+}
+
+
 
 Write-Host "
          *                  *
