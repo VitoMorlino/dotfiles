@@ -12,15 +12,16 @@ I'm working on a way to automate setting up a new machine by running a script th
 - download the programs I use and set their settings
 - set up my environment and file structure
 
-The macOS script is a bit more fleshed out (as of feb 19 2025) than Windows because I was working mostly from macOS when I started building this automation pipeline, but I don't plan on continuing to update it. It should still work in its current state, but I won't be keeping up with it, so it might break in the future.
+The macOS script should still work in its current state, but I won't be keeping up with it, so it might break in the future.
 
 I'm currently working on the Windows setup script (for the forseeable future - sorry btw-ers, it makes game development easier). The next step is going to be changing Windows's settings to my liking with the registry
 
-## possible future plans (or "nice to have")
-- tbd
-
 # how to install (Windows)
 ### _if you're me_:
+  Insert SeekerFox usb drive and run `.\installers\setup_new_win.cmd`
+  This will use portable Git from the drive to clone this repo to the home directory on the machine and automatically run the setup script from this repo
+
+  Alternatively (if SeekerFox is unavailable):
   1. open cmd or powershell and run the following commands
   2. install git with `winget install --id Git.Git -e --source winget`
   3. `cd` to where you want this repo to live
