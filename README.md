@@ -18,15 +18,16 @@ I'm currently working on the Windows setup script (for the forseeable future - s
 
 # how to install (Windows)
 ### _if you're me_:
-  Insert SeekerFox usb drive and run `.\installers\setup_new_win.cmd`
-  This will use portable Git from the drive to clone this repo to the home directory on the machine and automatically run the setup script from this repo
+  * Insert SeekerFox usb drive and run `.\installers\setup_new_win.cmd`
 
-  Alternatively (if SeekerFox is unavailable):
-  1. open cmd or powershell and run the following commands
-  2. install git with `winget install --id Git.Git -e --source winget`
-  3. `cd` to where you want this repo to live
-  4. clone this repo with `git clone https://github.com/VitoMorlino/dotfiles.git`
-  5. run the setup script with `.\setup_windows`
+  This will use portable Git from the drive to clone this repo to the home directory on the machine and automatically run the `.\setup_windows`
+
+  >Alternatively (if SeekerFox is unavailable):
+  >1. open cmd or powershell and run the following commands
+  >2. install git with `winget install --id Git.Git -e --source winget`
+  >3. `cd` to where you want this repo to live
+  >4. clone this repo with `git clone https://github.com/VitoMorlino/dotfiles.git`
+  >5. run the setup script with `.\setup_windows`
 
   * Note: git might get angy about dubious ownership of the repo when running terminal (or github-desktop) as Admin vs User or on a new machine. Here are a couple solutions I've found:
     - the automatically-provided solution is to mark the directory as "safe" in the .gitconfig
