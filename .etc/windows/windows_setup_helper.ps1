@@ -36,7 +36,6 @@ foreach ($app in $appsToUninstall) {
         } else {
 		$failedUninstalls += $app
         }
-    }
 }
 
 # If there were unsuccessful attempts, print a warning
@@ -121,19 +120,22 @@ if ($seekerFox) {
 }
 
 # make a backup file of the windows settings portion of the registry
-if (Test-Path -Path "$seekerFoxDriveLetter\") {
-	$timestamp = Get-Date -Format "yyyy MM dd HH:mm" | ForEach-Object { $_ -replace ":", "."  -replace " ", "." }
-	$registryBackupFileName = "registry_before_setup_$timestamp.reg"
-	$registryBackupDirName = "registry_backups"
-	$registryBackupFilePath = "$seekerFoxDriveLetter\$registryBackupDirName\$registryBackupFileName"
-
-	# create the directory if it doesn't exist
-	[System.IO.Directory]::CreateDirectory("$seekerFoxDriveLetter\$registryBackupDirName")
-
-	reg export "HKCU\Software\Microsoft\Windows\CurrentVersion" $registryBackupFilePath
+Write-Host "Backing up the windows settings portion of the registry..."
+$timestamp = Get-Date -Format "yyyy MM dd HH:mm" | ForEach-Object { $_ -replace ":", "."  -replace " ", "." }
+$computerName = $env:computername
+$registryBackupFileName = "$computerName.registry_before_setup_$timestamp.reg"
+$registryBackupDirName = "registry_backups"
+$registryBackupDirPath = ""
+$registryBackupFilePath = ""
+if (Test-Path -Path "$seekerFoxDriveLetter\backups") {
+	$registryBackupDirPath = "$seekerFoxDriveLetter\backups\$registryBackupDirName"
 } else {
-	# TODO: make the backup folder at $HOME
+	$registryBackupDirPath = "$HOME\$registryBackupDirName"
+	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registryBackupDirPath."
 }
+[System.IO.Directory]::CreateDirectory("$registryBackupDirPath")
+$registryBackupFilePath = "$registryBackupDirPath\$registryBackupFileName"
+reg export "HKCU\Software\Microsoft\Windows\CurrentVersion" $registryBackupFilePath
 
 # TODO: add all my registry edits
 
@@ -188,6 +190,7 @@ Write-Host "
                (__/       ) )
                          (_/"
 
+Write-Host "Setup Complete"
 Read-Host -Prompt "Press [Enter] to exit"
 
 
