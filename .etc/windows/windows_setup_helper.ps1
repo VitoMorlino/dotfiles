@@ -112,10 +112,10 @@ Write-Host "`nSymbolic Links Created"
 
 # look for seekerfox usb drive
 $seekerFox = Get-WmiObject -Class Win32_Volume -Filter "Label = 'SeekerFox2'"
-$seekerFoxDriveLetter = $null
+$seekerFoxPath = $null
 if ($seekerFox) {
 	#Select-Object -InputObject $seekerFox -ExpandProperty SerialNumber
-	$seekerFoxDriveLetter = Select-Object -InputObject $seekerFox -ExpandProperty DriveLetter
+	$seekerFoxPath = Select-Object -InputObject $seekerFox -ExpandProperty DriveLetter
 } else {
 	Write-Host "SeekerFox not found"
 }
@@ -128,8 +128,8 @@ $registryBackupFileName = "$computerName.registry_before_setup_$timestamp"
 $registryBackupDirName = "registry_backups"
 $registryBackupDirPath = ""
 $registryBackupFilePath = ""
-if (Test-Path -Path "$seekerFoxDriveLetter\backups") {
-	$registryBackupDirPath = "$seekerFoxDriveLetter\backups\$registryBackupDirName"
+if (Test-Path -Path "$seekerFoxPath\backups") {
+	$registryBackupDirPath = "$seekerFoxPath\backups\$registryBackupDirName"
 } else {
 	$registryBackupDirPath = "$HOME\$registryBackupDirName"
 	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registryBackupDirPath."
@@ -177,10 +177,21 @@ $newPath = ($pathArray + $binPath) -join ';'
 ### Set up personal folders in home folder
 ######
 
-# TODO: 
-# - check for seekerfox drive
-# - git clone seekerfox\lifeOS to ~\lifeOS
-# - create folder ~\projects
+Write-Host "Setting up personal folders in home directory..."
+$localLifeOSPath = "$HOME\lifeOS"
+$remoteLifeOSPath = "$seekerFoxPath\lifeOS"
+[System.IO.Directory]::CreateDirectory($localLifeOSPath)
+[System.IO.Directory]::CreateDirectory("$HOME\projects")
+if (Test-Path -Path $remoteLifeOSPath) {
+	&git clone $remoteLifeOSPath $localLifeOSPath
+} else {
+	Write-Host "Failed to clone lifeOS. Path not found: $remoteLifeOSPath"
+}
+
+
+######
+### fix discord
+######
 
 # HACK: There is an issue with installing some newer versions of discord (as of 1.0.9184) from the command line
 # where a fatal error will occur on launch.
