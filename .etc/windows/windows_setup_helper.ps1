@@ -119,11 +119,11 @@ if ($seekerFox) {
 	Write-Host "SeekerFox not found"
 }
 
-# make a backup file of the windows settings portion of the registry
-Write-Host "Backing up the windows settings portion of the registry..."
+# make a backup of the registry
+Write-Host "Backing up the registry..."
 $timestamp = Get-Date -Format "yyyy MM dd HH:mm" | ForEach-Object { $_ -replace ":", "."  -replace " ", "." }
 $computerName = $env:computername
-$registryBackupFileName = "$computerName.registry_before_setup_$timestamp.reg"
+$registryBackupFileName = "$computerName.registry_before_setup_$timestamp"
 $registryBackupDirName = "registry_backups"
 $registryBackupDirPath = ""
 $registryBackupFilePath = ""
@@ -133,12 +133,26 @@ if (Test-Path -Path "$seekerFoxDriveLetter\backups") {
 	$registryBackupDirPath = "$HOME\$registryBackupDirName"
 	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registryBackupDirPath."
 }
-[System.IO.Directory]::CreateDirectory("$registryBackupDirPath")
 $registryBackupFilePath = "$registryBackupDirPath\$registryBackupFileName"
-reg export "HKCU\Software\Microsoft\Windows\CurrentVersion" $registryBackupFilePath
+[System.IO.Directory]::CreateDirectory("$registryBackupFilePath")
+Write-Host "Exporting HKCR..."
+reg export "HKCR" "$registryBackupFilePath\hkey_classes_root.reg"
+Write-Host "Exporting HKCU..."
+reg export "HKCU" "$registryBackupFilePath\hkey_current_user.reg"
+Write-Host "Exporting HKLM..."
+reg export "HKLM" "$registryBackupFilePath\hkey_local_machine.reg"
+Write-Host "Exporting HKU..."
+reg export "HKU" "$registryBackupFilePath\hkey_users.reg"
+Write-Host "Exporting HKCC..."
+reg export "HKCC" "$registryBackupFilePath\hkey_current_config.reg"
 
-# TODO: add all my registry edits
-
+# add my registry edits
+$registryKeysDir = ".\.etc\windows\registry_keys\"
+foreach ($file in Get-ChildItem -Path $registryKeysDir) {
+	Write-Host "Processing file: $($file.FullName)"
+	&reg import $($file.FullName)
+}
+Write-Host "Registry edits complete."
 
 ######
 ### Set up environment variables
