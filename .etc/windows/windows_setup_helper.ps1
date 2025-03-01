@@ -79,9 +79,10 @@ choco install -y $chocopacks
 
 # Linked Files (Destination => Source)
 $symlinks = @{
-	"$HOME\AppData\Local\nvim"			= ".\nvim\.config\nvim"
+	"$env:LOCALAPPDATA\nvim"			= ".\nvim\.config\nvim"
 	"$HOME\.gitconfig"				= ".\git\.gitconfig"
 	"$HOME\bin"					= ".\bin"
+	"$env:APPDATA\discord"				= ".\discord"
 }
 
 

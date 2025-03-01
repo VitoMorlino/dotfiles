@@ -1,0 +1,5 @@
+# Ignore EVERYTHING in this folder and whitelist just this .gitignore and the settings file
+
+**
+!.gitignore
+!settings.json
