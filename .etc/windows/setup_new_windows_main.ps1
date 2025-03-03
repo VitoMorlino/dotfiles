@@ -58,6 +58,7 @@ Write-Host "Finished uninstalling bloat"
 # NOTE: add chocolatey packages to this list to be installed
 # find package names at https://community.chocolatey.org/packages
 $chocopacks = 
+	"git",
 	"neovim",
 	"ripgrep",
 	"golang",
@@ -84,7 +85,6 @@ $symlinks = @{
 	"$HOME\bin"							= ".\bin"
 	"$env:APPDATA\discord"						= ".\discord"
 }
-
 
 # Create Symbolic Links
 Write-Host "Creating Symbolic Links...`r`n"
@@ -163,6 +163,7 @@ foreach ($file in Get-ChildItem -Path $registryKeysDir) {
 }
 Write-Host "Registry edits complete."
 
+
 ######
 ### Set up environment variables
 ######
@@ -175,7 +176,6 @@ $pathArray = [System.Environment]::GetEnvironmentVariable('PATH', $scope) -split
 $pathArray = $pathArray | Where-Object { $_ -notMatch "^$regexEscapedPath\\?" }
 $newPath = ($pathArray + $binPath) -join ';'
 [System.Environment]::SetEnvironmentVariable('PATH', $newPath, $scope)
-
 
 # add HOME as an environment variable
 [System.Environment]::SetEnvironmentVariable('HOME', $HOME, $scope)
