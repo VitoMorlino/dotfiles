@@ -36,7 +36,7 @@ REM we're installing chocolatey here, before running the ps1 file, as an alterna
 REM reloading the file, to ensure chocolatey's environment variables are set before
 REM using it to install packages
 
-winget install chocolatey --accept-source-agreements
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy RemoteSigned -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 
 
 REM finally, we launch the powershell file that will do the rest of the setup process
