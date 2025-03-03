@@ -5,10 +5,10 @@
   "IS_MAXIMIZED": false,
   "IS_MINIMIZED": false,
   "WINDOW_BOUNDS": {
-    "x": 456,
-    "y": 232,
-    "width": 1284,
-    "height": 724
+    "x": 2283,
+    "y": 60,
+    "width": 1288,
+    "height": 729
   },
   "BACKGROUND_COLOR": "#2b2d31",
   "audioSubsystem": "experimental",
