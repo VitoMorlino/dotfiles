@@ -41,4 +41,4 @@ winget install chocolatey --accept-source-agreements
 
 REM finally, we launch the powershell file that will do the rest of the setup process
 
-start powershell.exe -executionpolicy RemoteSigned .\.etc\windows\windows_setup_helper.ps1
+start powershell.exe -executionpolicy RemoteSigned .\.etc\windows\setup_new_windows_main.ps1

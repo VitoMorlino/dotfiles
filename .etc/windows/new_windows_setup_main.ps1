@@ -79,10 +79,10 @@ choco install -y $chocopacks
 
 # Linked Files (Destination => Source)
 $symlinks = @{
-	"$env:LOCALAPPDATA\nvim"			= ".\nvim\.config\nvim"
-	"$HOME\.gitconfig"				= ".\git\.gitconfig"
-	"$HOME\bin"					= ".\bin"
-	"$env:APPDATA\discord"				= ".\discord"
+	"$env:LOCALAPPDATA\nvim"					= ".\nvim\.config\nvim"
+	"$HOME\.gitconfig"						= ".\git\.gitconfig"
+	"$HOME\bin"							= ".\bin"
+	"$env:APPDATA\discord"						= ".\discord"
 }
 
 
@@ -107,8 +107,16 @@ Write-Host "`nSymbolic Links Created"
 
 
 ######
-### Configure Windows's settings by changing registry values
+### Configure Windows
 ######
+
+# set windows theme by executing my .theme file
+$themePath = ".\.etc\windows\tivo_theme.theme"
+if (Test-Path -Path $themePath) {
+	&$themePath
+} else {
+	Write-Host "couldn't find theme file at $themePath"
+}
 
 # look for seekerfox usb drive
 $seekerFox = Get-WmiObject -Class Win32_Volume -Filter "Label = 'SeekerFox2'"
@@ -136,18 +144,18 @@ if (Test-Path -Path "$seekerFoxPath\backups") {
 }
 $registryBackupFilePath = "$registryBackupDirPath\$registryBackupFileName"
 [System.IO.Directory]::CreateDirectory("$registryBackupFilePath")
-Write-Host "Exporting HKCR..."
+Write-Host "Exporting HKEY_CLASSES_ROOT..."
 reg export "HKCR" "$registryBackupFilePath\hkey_classes_root.reg"
-Write-Host "Exporting HKCU..."
+Write-Host "Exporting HKEY_CURRENT_USER..."
 reg export "HKCU" "$registryBackupFilePath\hkey_current_user.reg"
-Write-Host "Exporting HKLM..."
+Write-Host "Exporting HKEY_LOCAL_MACHINE..."
 reg export "HKLM" "$registryBackupFilePath\hkey_local_machine.reg"
-Write-Host "Exporting HKU..."
+Write-Host "Exporting HKEY_USERS..."
 reg export "HKU" "$registryBackupFilePath\hkey_users.reg"
-Write-Host "Exporting HKCC..."
+Write-Host "Exporting HKEY_CURRENT_CONFIG..."
 reg export "HKCC" "$registryBackupFilePath\hkey_current_config.reg"
 
-# add my registry edits
+# add my registry edits by importing all .reg files in the keys folder
 $registryKeysDir = ".\.etc\windows\registry_keys\"
 foreach ($file in Get-ChildItem -Path $registryKeysDir) {
 	Write-Host "Processing file: $($file.FullName)"
