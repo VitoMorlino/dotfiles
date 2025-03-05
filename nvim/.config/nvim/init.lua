@@ -990,6 +990,7 @@ require("lazy").setup({
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
 				-- "gdtoolkit", -- linting and formatting for GodotScript
+				"gdtoolkit", -- linting and formatting for GodotScript
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -1310,6 +1311,7 @@ require("lazy").setup({
 				"vim",
 				"vimdoc",
 				-- "gdscript",
+				"gdscript",
 				"godot_resource",
 				"gdshader",
 			},

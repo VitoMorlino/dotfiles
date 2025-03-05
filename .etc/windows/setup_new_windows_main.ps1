@@ -62,9 +62,11 @@ $chocopacks =
 	"neovim",
 	"ripgrep",
 	"golang",
+	"python",
 	"sqlite",
 	"mingw",
 	"neovide",
+	"godot",
 	"github-desktop",
 	"discord",
 	"steam",
@@ -84,6 +86,7 @@ $symlinks = @{
 	"$HOME\.gitconfig"						= ".\git\.gitconfig"
 	"$HOME\bin"							= ".\bin"
 	"$env:APPDATA\discord"						= ".\discord"
+	"$env:APPDATA\godot"				= ".\godot"
 }
 
 # Create Symbolic Links
@@ -216,6 +219,26 @@ if (Test-Path -Path $discordFixPath) {
 	Write-Host "Discord fix failed. Path not found: $discordFixPath"
 }
 
+# HACK: The Godot package (on chocolatey, at least) doesn't create a start menu shortcut for some reason?
+# So, I figured I could just make one by creating a shortcut to the godot exe in the start menu programs folder
+Write-Host "Adding start menu shortcut for Godot. Hopefully future versions of the chocolatey package do this automatically"
+$godotStartFixPath = ".\.etc\windows\hack_fixes\godot_startmenu_fix.ps1"
+if (Test-Path -Path $godotStartFixPath) {
+	# run the script
+	&$godotStartFixPath
+} else {
+	Write-Host "Godot Start Menu fix failed. Path not found: $godotStartFixPath"
+}
+
+# While we're at it, we'll go ahead and add a start menu shortcut for my godot-neovim pipeline
+Write-Host "Adding start menu shortcut for geovide."
+$geovideScriptPath = ".\.etc\windows\geovide_add_startmenu.ps1"
+if (Test-Path -Path $geovideScriptPath) {
+	# run the script
+	&$geovideScriptPath
+} else {
+	Write-Host "Failed to add geovide start menu shortcut. Path not found: $geovideScriptPath"
+}
 
 
 Write-Host "

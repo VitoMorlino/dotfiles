@@ -1,0 +1,5 @@
+# Ignore EVERYTHING in this folder and whitelist just this .gitignore and specific files/directories we want in the repo
+
+**
+!.gitignore
+!editor_settings*.tres
