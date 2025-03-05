@@ -208,12 +208,12 @@ if (Test-Path -Path $remoteLifeOSPath) {
 # - copy "~/AppData/Local/Discord/app-1.0.9184/installer.db" to "~/AppData/Local/Discord/"
 # The following script will find those files and take care of that.
 Write-Host "Fixing discord's install. Hopefully in future versions, we won't have to do this."
-$discordFixPath = ".\.etc\windows\discord_install_fix.ps1"
+$discordFixPath = ".\.etc\windows\hack_fixes\discord_install_fix.ps1"
 if (Test-Path -Path $discordFixPath) {
 	# run the script
 	&$discordFixPath
 } else {
-	Write-Host "couldn't find $discordFixPath"
+	Write-Host "Discord fix failed. Path not found: $discordFixPath"
 }
 
 
