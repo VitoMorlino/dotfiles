@@ -117,7 +117,7 @@ Write-Host "`nSymbolic Links Created"
 
 # set windows theme by executing my .theme file
 Write-Host "Setting windows theme..."
-$themePath = ".\.etc\windows\tivo_theme.theme"
+$themePath = "$HOME\dotfiles\.etc\windows\tivo_theme.theme"
 if (Test-Path -Path $themePath) {
 	&$themePath
 	# TODO: close the settings window that opens when the theme file is executed
@@ -163,7 +163,7 @@ Write-Host "Exporting HKEY_CURRENT_CONFIG..."
 reg export "HKCC" "$registryBackupFilePath\hkey_current_config.reg"
 
 # add my registry edits by importing all .reg files in the keys folder
-$registryKeysDir = ".\.etc\windows\registry_keys\"
+$registryKeysDir = "$HOME\dotfiles\.etc\windows\registry_keys\"
 foreach ($file in Get-ChildItem -Path $registryKeysDir) {
 	Write-Host "Processing file: $($file.FullName)"
 	&reg import $($file.FullName)
@@ -216,7 +216,7 @@ if (Test-Path -Path $remoteLifeOSPath) {
 # - copy "~/AppData/Local/Discord/app-1.0.9184/installer.db" to "~/AppData/Local/Discord/"
 # The following script will find those files and take care of that.
 Write-Host "Fixing discord's install. Hopefully in future versions, we won't have to do this."
-$discordFixPath = ".\.etc\windows\hack_fixes\discord_install_fix.ps1"
+$discordFixPath = "$HOME\dotfiles\.etc\windows\hack_fixes\discord_install_fix.ps1"
 if (Test-Path -Path $discordFixPath) {
 	# run the script
 	&$discordFixPath
@@ -227,7 +227,7 @@ if (Test-Path -Path $discordFixPath) {
 # HACK: The Godot package (on chocolatey, at least) doesn't create a start menu shortcut for some reason?
 # So, I figured I could just make one by creating a shortcut to the godot exe in the start menu programs folder
 Write-Host "Adding start menu shortcut for Godot. Hopefully future versions of the chocolatey package do this automatically"
-$godotStartFixPath = ".\.etc\windows\hack_fixes\godot_startmenu_fix.ps1"
+$godotStartFixPath = "$HOME\dotfiles\.etc\windows\hack_fixes\godot_startmenu_fix.ps1"
 if (Test-Path -Path $godotStartFixPath) {
 	# run the script
 	&$godotStartFixPath
@@ -237,7 +237,7 @@ if (Test-Path -Path $godotStartFixPath) {
 
 # While we're at it, we'll go ahead and add a start menu shortcut for my godot-neovim pipeline
 Write-Host "Adding start menu shortcut for geovide."
-$geovideScriptPath = ".\.etc\windows\geovide_add_startmenu.ps1"
+$geovideScriptPath = "$HOME\dotfiles\.etc\windows\geovide_add_startmenu.ps1"
 if (Test-Path -Path $geovideScriptPath) {
 	# run the script
 	&$geovideScriptPath
