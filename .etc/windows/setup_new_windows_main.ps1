@@ -72,8 +72,10 @@ $chocopacks =
 	"steam",
 	"nvidia-app"
 
+Write-Host "Installing packages..."
 # (-y confirms running scripts without requiring user input)
 choco install -y $chocopacks
+Write-Host "Finished installing packages."
 
 
 ######
@@ -114,9 +116,11 @@ Write-Host "`nSymbolic Links Created"
 ######
 
 # set windows theme by executing my .theme file
+Write-Host "Setting windows theme..."
 $themePath = ".\.etc\windows\tivo_theme.theme"
 if (Test-Path -Path $themePath) {
 	&$themePath
+	# TODO: close the settings window that opens when the theme file is executed
 } else {
 	Write-Host "couldn't find theme file at $themePath"
 }
@@ -171,6 +175,7 @@ Write-Host "Registry edits complete."
 ### Set up environment variables
 ######
 
+Write-Host "Setting up environment variables..."
 # add my bin folder to Windows's PATH variable
 $binPath = "$HOME\bin"
 $scope = "User" # scope options: "Process", "User", "Machine"
@@ -201,7 +206,7 @@ if (Test-Path -Path $remoteLifeOSPath) {
 
 
 ######
-### fix discord
+### fix some app installations
 ######
 
 # HACK: There is an issue with installing some newer versions of discord (as of 1.0.9184) from the command line
