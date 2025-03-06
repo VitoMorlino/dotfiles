@@ -1,0 +1,10 @@
+# Ignore EVERYTHING in this folder and whitelist just this .gitignore and specific files/directories we want in the repo
+
+**
+!.gitignore
+!custom-config.org
+!init.el
+!customize-auto-generated.el
+!README_how-to-config.txt
+!org-html-themes**
+
