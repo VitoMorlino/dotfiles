@@ -22,6 +22,7 @@ $appsToUninstall =
 	"Microsoft.MicrosoftEdge.Stable"
 
 $failedUninstalls = @()
+Write-Host "Uninstalling apps I don't want..." -ForegroundColor cyan
 foreach ($app in $appsToUninstall) {
 	# Get the package, if it exists
         $package = Get-AppxPackage | Where-Object { $_.Name -eq $app -or $_.PackageFullName -eq $app }
@@ -30,7 +31,7 @@ foreach ($app in $appsToUninstall) {
 		try {
 		        $package | Remove-AppxPackage -ErrorAction Stop
 		} catch {
-			Write-Host "Error while trying to uninstall $($line): $_"
+			Write-Host "Error while trying to uninstall $($line): $_" -ForegroundColor magenta
 			$failedUninstalls += $app
 		}
         } else {
@@ -40,15 +41,15 @@ foreach ($app in $appsToUninstall) {
 
 # If there were unsuccessful attempts, print a warning
 if ($failedUninstalls) {
-	Write-Host "WARNING: The following packages were not found and could not be uninstalled:"
+	Write-Host "WARNING: The following packages were not found and could not be uninstalled:" -ForegroundColor yellow
 
 	# Print each package name that was not found
 	foreach ($package in $failedUninstalls) {
-		Write-Host "`t$package"
+		Write-Host "`t$package" -ForegroundColor yellow
 	}
 }
 
-Write-Host "Finished uninstalling bloat"
+Write-Host "Finished uninstalling bloat" -ForegroundColor green
 
 
 ######
@@ -72,10 +73,10 @@ $chocopacks =
 	"steam",
 	"nvidia-app"
 
-Write-Host "Installing packages..."
+Write-Host "`nInstalling packages..." -ForegroundColor cyan
 # (-y confirms running scripts without requiring user input)
 choco install -y $chocopacks
-Write-Host "Finished installing packages."
+Write-Host "Finished installing packages." -ForegroundColor green
 
 
 ######
@@ -92,11 +93,11 @@ $symlinks = @{
 }
 
 # Create Symbolic Links
-Write-Host "Creating Symbolic Links...`r`n"
+Write-Host "`nCreating Symbolic Links...`r" -ForegroundColor cyan
 foreach ($symlink in $symlinks.GetEnumerator()) {
 	# if the path exists, ask to confirm overwrite
 	if ($(Test-Path -Path $symlink.Key)) {
-		$ShouldOverwrite = Read-Host "`tWARNING:" $symlink.Key "already exists. Overwrite? (y/n)"
+		$ShouldOverwrite = $(Write-Host "`tWARNING:" $symlink.Key "already exists. Overwrite? (y/n): " -ForegroundColor yellow -nonewline; Read-Host)
 		if (!($ShouldOverwrite -eq 'y')) {
 			Write-Host "`t[==] skipping" $symlink.Value
 			continue
@@ -108,7 +109,7 @@ foreach ($symlink in $symlinks.GetEnumerator()) {
 	
 	Write-Host "`t[++] symlinking" $symlink.Key
 }
-Write-Host "`nSymbolic Links Created"
+Write-Host "Symbolic Links Created" -ForegroundColor green
 
 
 ######
@@ -116,13 +117,13 @@ Write-Host "`nSymbolic Links Created"
 ######
 
 # set windows theme by executing my .theme file
-Write-Host "Setting windows theme..."
+Write-Host "`nSetting windows theme..." -ForegroundColor cyan
 $themePath = "$HOME\dotfiles\.etc\windows\tivo_theme.theme"
 if (Test-Path -Path $themePath) {
 	&$themePath
 	# TODO: close the settings window that opens when the theme file is executed
 } else {
-	Write-Host "couldn't find theme file at $themePath"
+	Write-Host "couldn't find theme file at $themePath" -ForegroundColor red
 }
 
 # look for seekerfox usb drive
@@ -132,11 +133,11 @@ if ($seekerFox) {
 	#Select-Object -InputObject $seekerFox -ExpandProperty SerialNumber
 	$seekerFoxPath = Select-Object -InputObject $seekerFox -ExpandProperty DriveLetter
 } else {
-	Write-Host "SeekerFox not found"
+	Write-Host "SeekerFox not found" -ForegroundColor magenta
 }
 
 # make a backup of the registry
-Write-Host "Backing up the registry..."
+Write-Host "`nBacking up the registry..." -ForegroundColor cyan
 $timestamp = Get-Date -Format "yyyy MM dd HH:mm" | ForEach-Object { $_ -replace ":", "."  -replace " ", "." }
 $computerName = $env:computername
 $registryBackupFileName = "$computerName.registry_before_setup_$timestamp"
@@ -147,7 +148,7 @@ if (Test-Path -Path "$seekerFoxPath\backups") {
 	$registryBackupDirPath = "$seekerFoxPath\backups\$registryBackupDirName"
 } else {
 	$registryBackupDirPath = "$HOME\$registryBackupDirName"
-	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registryBackupDirPath."
+	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registryBackupDirPath." -ForegroundColor red
 }
 $registryBackupFilePath = "$registryBackupDirPath\$registryBackupFileName"
 [System.IO.Directory]::CreateDirectory("$registryBackupFilePath")
@@ -163,19 +164,20 @@ Write-Host "Exporting HKEY_CURRENT_CONFIG..."
 reg export "HKCC" "$registryBackupFilePath\hkey_current_config.reg"
 
 # add my registry edits by importing all .reg files in the keys folder
+Write-Host "`nAdding my registry edits to change Windows settings" -ForegroundColor cyan
 $registryKeysDir = "$HOME\dotfiles\.etc\windows\registry_keys\"
 foreach ($file in Get-ChildItem -Path $registryKeysDir) {
 	Write-Host "Processing file: $($file.FullName)"
 	&reg import $($file.FullName)
 }
-Write-Host "Registry edits complete."
+Write-Host "Registry edits complete." -ForegroundColor green
 
 
 ######
 ### Set up environment variables
 ######
 
-Write-Host "Setting up environment variables..."
+Write-Host "`nSetting up environment variables..." -ForegroundColor cyan
 # add my bin folder to Windows's PATH variable
 $binPath = "$HOME\bin"
 $scope = "User" # scope options: "Process", "User", "Machine"
@@ -193,7 +195,7 @@ $newPath = ($pathArray + $binPath) -join ';'
 ### Set up personal folders in home folder
 ######
 
-Write-Host "Setting up personal folders in home directory..."
+Write-Host "Setting up personal folders in home directory..." -ForegroundColor cyan
 $localLifeOSPath = "$HOME\lifeOS"
 $remoteLifeOSPath = "$seekerFoxPath\lifeOS"
 [System.IO.Directory]::CreateDirectory($localLifeOSPath)
@@ -201,7 +203,7 @@ $remoteLifeOSPath = "$seekerFoxPath\lifeOS"
 if (Test-Path -Path $remoteLifeOSPath) {
 	&git clone $remoteLifeOSPath $localLifeOSPath
 } else {
-	Write-Host "Failed to clone lifeOS. Path not found: $remoteLifeOSPath"
+	Write-Host "Failed to clone lifeOS. Path not found: $remoteLifeOSPath" -ForegroundColor magenta
 }
 
 
@@ -215,34 +217,34 @@ if (Test-Path -Path $remoteLifeOSPath) {
 # - delete "~/AppData/Local/Discord/installer.db"
 # - copy "~/AppData/Local/Discord/app-1.0.9184/installer.db" to "~/AppData/Local/Discord/"
 # The following script will find those files and take care of that.
-Write-Host "Fixing discord's install. Hopefully in future versions, we won't have to do this."
+Write-Host "`nFixing discord's install. Hopefully in future versions, we won't have to do this." -ForegroundColor cyan
 $discordFixPath = "$HOME\dotfiles\.etc\windows\hack_fixes\discord_install_fix.ps1"
 if (Test-Path -Path $discordFixPath) {
 	# run the script
 	&$discordFixPath
 } else {
-	Write-Host "Discord fix failed. Path not found: $discordFixPath"
+	Write-Host "Discord fix failed. Path not found: $discordFixPath" -ForegroundColor red
 }
 
 # HACK: The Godot package (on chocolatey, at least) doesn't create a start menu shortcut for some reason?
 # So, I figured I could just make one by creating a shortcut to the godot exe in the start menu programs folder
-Write-Host "Adding start menu shortcut for Godot. Hopefully future versions of the chocolatey package do this automatically"
+Write-Host "`nAdding start menu shortcut for Godot. Hopefully future versions of the chocolatey package do this automatically" -ForegroundColor cyan
 $godotStartFixPath = "$HOME\dotfiles\.etc\windows\hack_fixes\godot_startmenu_fix.ps1"
 if (Test-Path -Path $godotStartFixPath) {
 	# run the script
 	&$godotStartFixPath
 } else {
-	Write-Host "Godot Start Menu fix failed. Path not found: $godotStartFixPath"
+	Write-Host "Godot Start Menu fix failed. Path not found: $godotStartFixPath" -ForegroundColor red
 }
 
 # While we're at it, we'll go ahead and add a start menu shortcut for my godot-neovim pipeline
-Write-Host "Adding start menu shortcut for geovide."
+Write-Host "`nAdding start menu shortcut for geovide." -ForegroundColor cyan
 $geovideScriptPath = "$HOME\dotfiles\.etc\windows\geovide_add_startmenu.ps1"
 if (Test-Path -Path $geovideScriptPath) {
 	# run the script
 	&$geovideScriptPath
 } else {
-	Write-Host "Failed to add geovide start menu shortcut. Path not found: $geovideScriptPath"
+	Write-Host "Failed to add geovide start menu shortcut. Path not found: $geovideScriptPath" -ForegroundColor red
 }
 
 
@@ -266,9 +268,8 @@ Write-Host "
      vV\|/vV|\`-'\  ,---\   | \Vv\hjwVv\//v
                 _) )    \`. \ /
                (__/       ) )
-                         (_/"
+                         (_/" -ForegroundColor magenta
 
-Write-Host "Setup Complete"
+Write-Host "Setup Complete" -ForegroundColor green
 Read-Host -Prompt "Press [Enter] to exit"
-
 
