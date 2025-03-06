@@ -1310,10 +1310,10 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
-				-- "gdscript",
 				"gdscript",
 				"godot_resource",
 				"gdshader",
+				"powershell",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
