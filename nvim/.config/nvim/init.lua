@@ -319,6 +319,7 @@ require("lazy").setup({
 
 	{
 		"vimwiki/vimwiki",
+		event = "VimEnter",
 		init = function()
 			vim.g.vimwiki_global_ext = 0 -- 0 means don't treat non-wiki files as vimwiki files
 			vim.g.vimwiki_ext2syntax = {
@@ -334,6 +335,13 @@ require("lazy").setup({
 			life_wiki.syntax = "markdown"
 			vim.g.vimwiki_list = { life_wiki }
 		end,
+		keys = {
+			{
+				"<leader>gl",
+				"<cmd>VimwikiIndex 1<CR>",
+				desc = "[G]oto [L]ifeOS",
+			},
+		},
 	},
 
 	{
@@ -598,6 +606,7 @@ require("lazy").setup({
 				{ "<leader>d", group = "[D]ocument" },
 				{ "<leader>r", group = "[R]ename" },
 				{ "<leader>s", group = "[S]earch" },
+				{ "<leader>g", group = "[G]oto" },
 				{ "<leader>sf", group = "[S]earch [F]iles" },
 				{ "<leader>w", group = "[W]orkspace / [W]iki" },
 				{ "<leader>t", group = "[T]oggle" },
