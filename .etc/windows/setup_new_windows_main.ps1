@@ -87,6 +87,7 @@ Write-Host "Finished installing packages." -ForegroundColor green
 $symlinks = @{
 	"$env:LOCALAPPDATA\nvim"			= ".\nvim\.config\nvim"
 	"$HOME\.gitconfig"				= ".\git\.gitconfig"
+	"$HOME\.mintty"					= ".\git\.mintty"
 	"$HOME\bin"					= ".\bin"
 	"$env:APPDATA\discord"				= ".\discord"
 	"$env:APPDATA\godot"				= ".\godot"
