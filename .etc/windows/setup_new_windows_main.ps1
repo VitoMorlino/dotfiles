@@ -59,23 +59,23 @@ Write-Host "Finished uninstalling bloat" -ForegroundColor green
 # NOTE: add chocolatey packages to this list to be installed
 # find package names at https://community.chocolatey.org/packages
 $chocopacks = 
-	"git",
-	"neovim",
-	"ripgrep",
-	"golang",
-	"python",
-	"sqlite",
-	"mingw",
-	"neovide",
-	"godot",
-	"github-desktop",
-	"discord",
-	"steam",
-	"nvidia-app"
+	"git", # core git
+	"neovim", # my favorite text editor
+	"ripgrep", # nvim telescope uses this to search
+	"golang", # the Go language
+	"python", # the Python language
+	"sqlite", # best database engine
+	"mingw", # c-compiler like gcc, built for windows
+	"neovide", # a desktop application for neovim
+	"godot", # open source game engine
+	"nmap", # needed for gdscript lsp
+	"github-desktop", # desktop application for github
+	"discord", # desktop application of discord chat app
+	"steam", # desktop application for steam
+	"nvidia-app" # nvidia's desktop app for drivers
 
 Write-Host "`nInstalling packages..." -ForegroundColor cyan
-# (-y confirms running scripts without requiring user input)
-choco install -y $chocopacks
+choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
 Write-Host "Finished installing packages." -ForegroundColor green
 
 
