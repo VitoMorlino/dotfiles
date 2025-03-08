@@ -115,6 +115,8 @@ if vim.g.neovide then
 	--  This is helpful because Telescope uses the current working directory for a lot of its functions
 	vim.opt.autochdir = true
 
+	vim.o.guifont = "Mononoki Nerd Font:h16"
+
 	-- change scale factor by default if we're on windows
 	if vim.uv.os_uname().sysname == "Windows_NT" then
 		vim.g.neovide_scale_factor = 0.75
