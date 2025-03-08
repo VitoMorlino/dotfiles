@@ -497,7 +497,11 @@ require("lazy").setup({
 		end,
 		opts = {
 			sign = {
-				enabled = false,
+				enabled = false, -- disable signs here to allow git signs
+			},
+			code = {
+				disable_background = true,
+				border = "none",
 			},
 		},
 		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
