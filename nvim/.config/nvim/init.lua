@@ -93,7 +93,7 @@ vim.g.maplocalleader = " "
 local is_mac = vim.uv.os_uname().sysname == "Darwin"
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -116,6 +116,7 @@ if vim.g.neovide then
 	vim.opt.autochdir = true
 
 	vim.o.guifont = "Mononoki Nerd Font:h16"
+	vim.g.neovide_padding_top = 10
 
 	-- change scale factor by default if we're on windows
 	if vim.uv.os_uname().sysname == "Windows_NT" then
