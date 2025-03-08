@@ -494,6 +494,8 @@ require("lazy").setup({
       ]])
 			-- override markdown Title highlight to match this plugin's highlights
 			vim.cmd.highlight({ "Title", "guifg=" .. lightPurple })
+			-- vimwiki overrides markdown rendering. we can take it back with this next line
+			vim.treesitter.language.register("markdown", "vimwiki")
 		end,
 		opts = {
 			sign = {
