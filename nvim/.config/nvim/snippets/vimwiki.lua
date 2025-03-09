@@ -11,7 +11,10 @@ end
 local lifeos_relative_path = function()
 	return f(function(_args, snip)
 		local path = vim.fn.fnamemodify(vim.fn.expand("%"), ":h")
-		return path or "oops"
+		if path == "." then
+			return ""
+		end
+		return "/" .. path or "oops"
 	end)
 end
 
@@ -38,7 +41,7 @@ return {
 	s(
 		"+lifeOS new page",
 		fmt(
-			"[{pagename}](/{path}/{filename})",
+			"[{pagename}]({path}/{filename})",
 			{ pagename = i(1, "new_page"), path = lifeos_relative_path(), filename = rep(1) }
 		)
 	),
@@ -47,7 +50,7 @@ return {
 	s(
 		"+lifeOS new directory",
 		fmt(
-			"[{pagename}](/{path}/{directory}/.{filename})",
+			"[{pagename}]({path}/{directory}/.{filename})",
 			{ pagename = i(1, "new_dir"), path = lifeos_relative_path(), directory = rep(1), filename = rep(1) }
 		)
 	),
