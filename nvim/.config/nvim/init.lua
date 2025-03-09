@@ -1187,7 +1187,7 @@ require("lazy").setup({
 						group_index = 0,
 					},
 					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
+					{ name = "luasnip", keyword_pattern = [[+\k\+]] },
 					{ name = "path" },
 				},
 

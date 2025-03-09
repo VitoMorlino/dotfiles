@@ -1,7 +1,4 @@
-return {
-	s(
-		"kitty",
-		t([[
+local pspsps = [[
         *                  *
             __                *
          ,db'    *     *
@@ -22,8 +19,9 @@ return {
                _) )    \`. \ /
               (__/       ) )
                         (_/
-			]])
-	),
-}, {
-	s("test", t("tested")),
+]]
+
+return {
+	s("+kitty", fmt("{cat}", { cat = pspsps })),
+	s("+test", t("tested")),
 }
