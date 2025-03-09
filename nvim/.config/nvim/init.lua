@@ -1118,7 +1118,9 @@ require("lazy").setup({
 			-- See `:help cmp`
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
-			luasnip.config.setup({})
+			luasnip.config.setup({
+				updateevents = "TextChanged, TextChangedI", -- update snippet while typing
+			})
 
 			cmp.setup({
 				snippet = {
