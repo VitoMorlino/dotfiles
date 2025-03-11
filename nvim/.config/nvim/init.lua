@@ -324,6 +324,7 @@ require("lazy").setup({
 		"vimwiki/vimwiki",
 		event = "VimEnter",
 		init = function()
+			vim.g.vimwiki_listsyms = " 󰥪X"
 			vim.g.vimwiki_global_ext = 0 -- 0 means don't treat non-wiki files as vimwiki files
 			vim.g.vimwiki_ext2syntax = {
 				[".md"] = "markdown",
@@ -504,6 +505,9 @@ require("lazy").setup({
 			code = {
 				disable_background = true,
 				border = "none",
+			},
+			checkbox = {
+				checked = { scope_highlight = "@markup.strikethrough" }, -- put a line through completed items
 			},
 		},
 		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
@@ -1344,8 +1348,7 @@ require("lazy").setup({
 				"gdshader",
 				"powershell",
 			},
-			-- Autoinstall languages that are not installed
-			auto_install = true,
+			auto_install = true, -- Autoinstall languages that are not installed
 			highlight = {
 				enable = true,
 				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
