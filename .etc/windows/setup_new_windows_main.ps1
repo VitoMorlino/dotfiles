@@ -78,6 +78,14 @@ Write-Host "`nInstalling packages..." -ForegroundColor cyan
 choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
 Write-Host "Finished installing packages." -ForegroundColor green
 
+# clear the desktop because some of the above installers add shortcuts to the desktop
+if (Test-Path -Path $HOME\Desktop\*) {
+	$desktop_deletions = Get-Item -Path $HOME\Desktop\*
+	Write-Host "`nClearing the desktop because some packages added shortcuts:"
+	foreach ($item in Split-Path -Leaf $desktop_deletions) { Write-Host "`t$item" } 
+	Remove-Item $desktop_deletions
+}
+
 
 ######
 ### Symlink files and directories to where they're expected to live
