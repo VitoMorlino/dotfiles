@@ -1,0 +1,2 @@
+# ignore log files from all the powertoys utilities
+*logs*

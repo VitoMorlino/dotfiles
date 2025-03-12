@@ -61,18 +61,19 @@ Write-Host "Finished uninstalling bloat" -ForegroundColor green
 $chocopacks = 
 	"git", # core git
 	"neovim", # my favorite text editor
-	"ripgrep", # nvim telescope uses this to search
+	"ripgrep", # grep but fancy (nvim telescope uses this to search)
 	"golang", # the Go language
-	"python", # the Python language
+	"python", # the Python language (gdscript parser needs this)
 	"sqlite", # best database engine
 	"mingw", # c-compiler like gcc, built for windows
-	"neovide", # a desktop application for neovim
+	"neovide", # desktop application for neovim
 	"godot", # open source game engine
 	"nmap", # needed for gdscript lsp
 	"github-desktop", # desktop application for github
-	"discord", # desktop application of discord chat app
+	"discord", # desktop application for discord
 	"steam", # desktop application for steam
 	"nvidia-app" # nvidia's desktop app for drivers
+	"powertoys," # microsoft suite of utilities to customize parts of Windows
 
 Write-Host "`nInstalling packages..." -ForegroundColor cyan
 choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
@@ -99,6 +100,7 @@ $symlinks = @{
 	"$HOME\bin"					= ".\bin"
 	"$env:APPDATA\discord"				= ".\discord"
 	"$env:APPDATA\godot"				= ".\godot"
+	"$env:LOCALAPPDATA\microsoft\powertoys"		= ".\powertoys"
 }
 
 # Create Symbolic Links
