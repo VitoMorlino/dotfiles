@@ -43,3 +43,11 @@ I'm currently working on the Windows setup script (for the forseeable future - s
   2. unzip with `tar -xf .\dotfiles-master.zip` (note: the file name may need to be changed to match the zip file you downloaded
   3. examine the setup script to ensure it's not going to change things you don't want it to change
   4. run the setup script with `.\setup_windows`
+
+
+---
+**_credits_**
+- neovim config started out as [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) before making my own customizations.
+- ascii art (in various files) made by [Hayley Wakenshaw](https://www.ludd.ltu.se/~vk/pics/ascii/junkyard/techstuff/tutorials/Hayley_Wakenshaw.html), signed `hjw`.
+- windows layout inspired by [vimichael](https://github.com/vimichael). I used their window-manager and taskbar configs as a starting point to customize my own.
+- emacs config (old) was inspired by [hrs](https://github.com/hrs), [sachac](https://github.com/sachac), and [magnars](https://github.com/magnars) (credit given in-line alongside their contributions to my config)
