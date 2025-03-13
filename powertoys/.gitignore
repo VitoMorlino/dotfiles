@@ -1,2 +1,5 @@
-# ignore log files from all the powertoys utilities
-*logs*
+# ignore everything, then whitelist just this gitignore and powertoys settings files
+
+**
+!.gitignore
+!*settings.json
