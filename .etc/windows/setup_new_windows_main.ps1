@@ -72,8 +72,9 @@ $chocopacks =
 	"github-desktop", # desktop application for github
 	"discord", # desktop application for discord
 	"steam", # desktop application for steam
-	"nvidia-app" # nvidia's desktop app for drivers
+	"nvidia-app", # nvidia's desktop app for drivers
 	"powertoys," # microsoft suite of utilities to customize parts of Windows
+	"translucenttb," # make the taskbar translucent
 
 Write-Host "`nInstalling packages..." -ForegroundColor cyan
 choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
@@ -159,7 +160,7 @@ if (Test-Path -Path "$seekerFoxPath\backups") {
 	$registryBackupDirPath = "$seekerFoxPath\backups\$registryBackupDirName"
 } else {
 	$registryBackupDirPath = "$HOME\$registryBackupDirName"
-	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registryBackupDirPath." -ForegroundColor red
+	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registryBackupDirPath." -ForegroundColor yellow
 }
 $registryBackupFilePath = "$registryBackupDirPath\$registryBackupFileName"
 [System.IO.Directory]::CreateDirectory("$registryBackupFilePath")
@@ -180,6 +181,16 @@ $registryKeysDir = "$HOME\dotfiles\.etc\windows\registry_keys\"
 foreach ($file in Get-ChildItem -Path $registryKeysDir) {
 	Write-Host "Processing file: $($file.FullName)"
 	&reg import $($file.FullName)
+}
+# make translucent taskbar run on startup
+Write-Host "`nAdding translucent taskbar to run on startup:"
+$ttbPortablePath = "$HOME\dotfiles\translucenttb\ttb_portable\translucenttb.exe"
+if (Test-Path -Path $ttbPortablePath) {
+	reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "TranslucentTB" /t REG_SZ /f /d "$ttbPortablePath"
+	# run ttb now so we don't have to wait for next startup
+	&$ttbPortablePath
+} else {
+	Write-Host "Couldn't find translucent taskbar at [$ttbPortablePath]" -ForegroundColor yellow
 }
 Write-Host "Registry edits complete." -ForegroundColor green
 
