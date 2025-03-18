@@ -74,6 +74,7 @@ $chocopacks =
 	"steam", # desktop application for steam
 	"nvidia-app", # nvidia's desktop app for drivers
 	"powertoys", # microsoft suite of utilities to customize parts of Windows
+	"wezterm", # terminal emulator
 
 Write-Host "`nInstalling packages..." -ForegroundColor cyan
 choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
@@ -101,6 +102,7 @@ $symlinks = @{
 	"$env:APPDATA\discord"				= ".\.config\discord"
 	"$env:APPDATA\godot"				= ".\.config\godot"
 	"$env:LOCALAPPDATA\microsoft\powertoys"		= ".\.config\powertoys"
+	"$HOME\.wezterm.lua"				= ".\.config\wezterm\wezterm.lua"
 }
 
 # Create Symbolic Links
