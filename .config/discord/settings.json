@@ -1,0 +1,17 @@
+{
+  "MINIMIZE_TO_TRAY": false,
+  "START_MINIMIZED": false,
+  "OPEN_ON_STARTUP": false,
+  "IS_MAXIMIZED": true,
+  "IS_MINIMIZED": false,
+  "WINDOW_BOUNDS": {
+    "x": -764,
+    "y": 318,
+    "width": 940,
+    "height": 826
+  },
+  "BACKGROUND_COLOR": "#2b2d31",
+  "audioSubsystem": "experimental",
+  "useLegacyAudioDevice": false,
+  "chromiumSwitches": {}
+}

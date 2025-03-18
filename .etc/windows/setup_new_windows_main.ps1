@@ -73,8 +73,7 @@ $chocopacks =
 	"discord", # desktop application for discord
 	"steam", # desktop application for steam
 	"nvidia-app", # nvidia's desktop app for drivers
-	"powertoys," # microsoft suite of utilities to customize parts of Windows
-	"translucenttb," # make the taskbar translucent
+	"powertoys", # microsoft suite of utilities to customize parts of Windows
 
 Write-Host "`nInstalling packages..." -ForegroundColor cyan
 choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
@@ -95,13 +94,13 @@ if (Test-Path -Path $HOME\Desktop\*) {
 
 # Linked Files (Destination => Source)
 $symlinks = @{
-	"$env:LOCALAPPDATA\nvim"			= ".\nvim\.config\nvim"
-	"$HOME\.gitconfig"				= ".\git\.gitconfig"
 	"$HOME\.mintty"					= ".\git\.mintty"
 	"$HOME\bin"					= ".\bin"
-	"$env:APPDATA\discord"				= ".\discord"
-	"$env:APPDATA\godot"				= ".\godot"
-	"$env:LOCALAPPDATA\microsoft\powertoys"		= ".\powertoys"
+	"$env:LOCALAPPDATA\nvim"			= ".\.config\nvim\.config\nvim"
+	"$HOME\.gitconfig"				= ".\.config\git\.gitconfig"
+	"$env:APPDATA\discord"				= ".\.config\discord"
+	"$env:APPDATA\godot"				= ".\.config\godot"
+	"$env:LOCALAPPDATA\microsoft\powertoys"		= ".\.config\powertoys"
 }
 
 # Create Symbolic Links
@@ -184,7 +183,7 @@ foreach ($file in Get-ChildItem -Path $registryKeysDir) {
 }
 # make translucent taskbar run on startup
 Write-Host "`nAdding translucent taskbar to run on startup:"
-$ttbPortablePath = "$HOME\dotfiles\translucenttb\ttb_portable\translucenttb.exe"
+$ttbPortablePath = "$HOME\dotfiles\.config\translucenttb\ttb_portable\translucenttb.exe"
 if (Test-Path -Path $ttbPortablePath) {
 	reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "TranslucentTB" /t REG_SZ /f /d "$ttbPortablePath"
 	# run ttb now so we don't have to wait for next startup
