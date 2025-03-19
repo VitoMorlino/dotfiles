@@ -1,0 +1,6 @@
+# ignore zebar's tmp files
+tmp*
+
+# ignore zebar's example configs
+boilerplate*
+starter*

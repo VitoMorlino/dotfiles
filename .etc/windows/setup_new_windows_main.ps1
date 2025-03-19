@@ -75,7 +75,9 @@ $chocopacks =
 	"steam", # desktop application for steam
 	"nvidia-app", # nvidia's desktop app for drivers
 	"powertoys", # microsoft suite of utilities to customize parts of Windows
+	"glazewm", # window manager inspired by i3wm
 	"wezterm", # terminal emulator
+	"zebar" # customizable taskbar (to use instead of windows taskbar)
 
 Write-Host "`nInstalling packages..." -ForegroundColor cyan
 choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
@@ -103,6 +105,8 @@ $symlinks = @{
 	"$env:APPDATA\discord"				= ".\.config\discord"
 	"$env:APPDATA\godot"				= ".\.config\godot"
 	"$env:LOCALAPPDATA\microsoft\powertoys"		= ".\.config\powertoys"
+	"$HOME\.glzr\zebar"				= ".\.config\zebar"
+	"$HOME\.glzr\glazewm"				= ".\.config\glazewm"
 	"$HOME\.wezterm.lua"				= ".\.config\wezterm\wezterm.lua"
 	"$HOME\.bash_profile"				= ".\.config\bash\.bash_profile"
 	"$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"		= ".\.config\windows-terminal\settings.json"
@@ -212,6 +216,19 @@ if (Test-Path -Path $ttbPortablePath) {
 } else {
 	Write-Host "Couldn't find translucent taskbar at [$ttbPortablePath]" -ForegroundColor yellow
 }
+
+# make glaze window manager run on startup
+Write-Host "`nAdding glaze window manager to run on startup:"
+$glazewmPath = "$env:ProgramFiles\glzr.io\glazewm\glazewm.exe"
+if (Test-Path -Path $glazewmPath) {
+	reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "GlazeWM" /t REG_SZ /f /d "$glazewmPath"
+	# run glazewm now so we don't have to wait for next startup
+	&$glazewmPath
+} else {
+	Write-Host "Couldn't find glaze window manager at [$glazewmPath]" -ForegroundColor yellow
+}
+
+
 Write-Host "Registry edits complete." -ForegroundColor green
 
 
