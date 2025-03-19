@@ -98,7 +98,6 @@ if (Test-Path -Path $HOME\Desktop\*) {
 
 # Linked Files (Destination => Source)
 $symlinks = @{
-	"$HOME\.mintty"					= ".\git\.mintty"
 	"$HOME\bin"					= ".\bin"
 	"$env:LOCALAPPDATA\nvim"			= ".\.config\nvim\.config\nvim"
 	"$HOME\.gitconfig"				= ".\.config\git\.gitconfig"
