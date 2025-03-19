@@ -19,7 +19,7 @@ config.font = wezterm.font("Mononoki Nerd Font")
 config.cell_width = 0.9
 config.window_background_opacity = 0.9
 config.prefer_egl = true
-config.font_size = 15.0
+config.font_size = 13.0
 
 config.window_padding = {
 	left = 0,

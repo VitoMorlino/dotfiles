@@ -115,7 +115,7 @@ if vim.g.neovide then
 	--  This is helpful because Telescope uses the current working directory for a lot of its functions
 	vim.opt.autochdir = true
 
-	vim.o.guifont = "Mononoki Nerd Font:h18"
+	vim.o.guifont = "Mononoki Nerd Font:h16"
 	vim.g.neovide_padding_top = 10
 
 	vim.g.neovide_transparency = 0.85
