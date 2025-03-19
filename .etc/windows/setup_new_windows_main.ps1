@@ -183,6 +183,22 @@ foreach ($file in Get-ChildItem -Path $registryKeysDir) {
 	Write-Host "Processing file: $($file.FullName)"
 	&reg import $($file.FullName)
 }
+
+# install fonts
+Write-Host "`nInstalling fonts:"
+$fontDir = "$HOME\dotfiles\usr\fonts\"
+$fontList = Get-ChildItem -Path $fontDir -Include ('*.fon','*.otf','*.ttc','*.ttf') -Recurse
+foreach ($font in $fontList) {
+
+	Write-Host "Installing font: " $font.BaseName
+	Copy-Item $font "C:\Windows\fonts"
+  
+	# add the fonts to the registry
+	# NOTE: when installing font through windows's gui, it adds them to `$env:LOCALAPPDATA\Microsoft\Windows\Fonts\`
+	# and registry entries point there. If this script doesn't install fonts properly, try that.
+	Set-ItemProperty -Name $font.BaseName -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -Value $font.name
+}
+
 # make translucent taskbar run on startup
 Write-Host "`nAdding translucent taskbar to run on startup:"
 $ttbPortablePath = "$HOME\dotfiles\.config\translucenttb\ttb_portable\translucenttb.exe"
