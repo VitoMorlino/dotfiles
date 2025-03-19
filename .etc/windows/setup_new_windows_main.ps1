@@ -61,6 +61,7 @@ Write-Host "Finished uninstalling bloat" -ForegroundColor green
 $chocopacks = 
 	"git", # core git
 	"neovim", # my favorite text editor
+	"fzf", # fuzzy finder for searching in the terminal
 	"ripgrep", # grep but fancy (nvim telescope uses this to search)
 	"golang", # the Go language
 	"python", # the Python language (gdscript parser needs this)
@@ -103,6 +104,7 @@ $symlinks = @{
 	"$env:APPDATA\godot"				= ".\.config\godot"
 	"$env:LOCALAPPDATA\microsoft\powertoys"		= ".\.config\powertoys"
 	"$HOME\.wezterm.lua"				= ".\.config\wezterm\wezterm.lua"
+	"$HOME\.bash_profile"				= ".\.config\bash\.bash_profile"
 }
 
 # Create Symbolic Links
