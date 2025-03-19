@@ -105,6 +105,7 @@ $symlinks = @{
 	"$env:LOCALAPPDATA\microsoft\powertoys"		= ".\.config\powertoys"
 	"$HOME\.wezterm.lua"				= ".\.config\wezterm\wezterm.lua"
 	"$HOME\.bash_profile"				= ".\.config\bash\.bash_profile"
+	"$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"		= ".\.config\windows-terminal\settings.json"
 }
 
 # Create Symbolic Links
