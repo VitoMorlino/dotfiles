@@ -542,60 +542,60 @@ require("lazy").setup({
 		end,
 	},
 
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		event = "VimEnter",
-		config = function()
-			local harpoon = require("harpoon")
-			if is_mac then
-				vim.keymap.set("n", "˙", function()
-					harpoon.ui:toggle_quick_menu(harpoon:list())
-				end)
-				vim.keymap.set("n", "µ", function()
-					harpoon:list():add()
-				end)
-				vim.keymap.set("n", "∆", function()
-					harpoon:list():select(1)
-				end)
-				vim.keymap.set("n", "˚", function()
-					harpoon:list():select(2)
-				end)
-				vim.keymap.set("n", "¬", function()
-					harpoon:list():select(3)
-				end)
-				vim.keymap.set("n", "<Alt-;>", function()
-					harpoon:list():select(4)
-				end)
-			else
-				vim.keymap.set("n", "<M-h>", function()
-					harpoon.ui:toggle_quick_menu(harpoon:list())
-				end)
-				vim.keymap.set("n", "<M-m>", function()
-					harpoon:list():add()
-				end)
-				vim.keymap.set("n", "<M-j>", function()
-					harpoon:list():select(1)
-				end)
-				vim.keymap.set("n", "<M-k>", function()
-					harpoon:list():select(2)
-				end)
-				vim.keymap.set("n", "<M-l>", function()
-					harpoon:list():select(3)
-				end)
-				vim.keymap.set("n", "<M-;>", function()
-					harpoon:list():select(4)
-				end)
-			end
-			harpoon:setup({
-				settings = {
-					save_on_toggle = true,
-					save_on_close = true,
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"ThePrimeagen/harpoon",
+	-- 	branch = "harpoon2",
+	-- 	dependencies = { "nvim-lua/plenary.nvim" },
+	-- 	event = "VimEnter",
+	-- 	config = function()
+	-- 		local harpoon = require("harpoon")
+	-- 		if is_mac then
+	-- 			vim.keymap.set("n", "˙", function()
+	-- 				harpoon.ui:toggle_quick_menu(harpoon:list())
+	-- 			end)
+	-- 			vim.keymap.set("n", "µ", function()
+	-- 				harpoon:list():add()
+	-- 			end)
+	-- 			vim.keymap.set("n", "∆", function()
+	-- 				harpoon:list():select(1)
+	-- 			end)
+	-- 			vim.keymap.set("n", "˚", function()
+	-- 				harpoon:list():select(2)
+	-- 			end)
+	-- 			vim.keymap.set("n", "¬", function()
+	-- 				harpoon:list():select(3)
+	-- 			end)
+	-- 			vim.keymap.set("n", "<Alt-;>", function()
+	-- 				harpoon:list():select(4)
+	-- 			end)
+	-- 		else
+	-- 			vim.keymap.set("n", "<M-h>", function()
+	-- 				harpoon.ui:toggle_quick_menu(harpoon:list())
+	-- 			end)
+	-- 			vim.keymap.set("n", "<M-m>", function()
+	-- 				harpoon:list():add()
+	-- 			end)
+	-- 			vim.keymap.set("n", "<M-j>", function()
+	-- 				harpoon:list():select(1)
+	-- 			end)
+	-- 			vim.keymap.set("n", "<M-k>", function()
+	-- 				harpoon:list():select(2)
+	-- 			end)
+	-- 			vim.keymap.set("n", "<M-l>", function()
+	-- 				harpoon:list():select(3)
+	-- 			end)
+	-- 			vim.keymap.set("n", "<M-;>", function()
+	-- 				harpoon:list():select(4)
+	-- 			end)
+	-- 		end
+	-- 		harpoon:setup({
+	-- 			settings = {
+	-- 				save_on_toggle = true,
+	-- 				save_on_close = true,
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
 	--
@@ -642,7 +642,7 @@ require("lazy").setup({
 
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
-		event = "VimEnter",
+		-- event = "VimEnter",
 		branch = "0.1.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
