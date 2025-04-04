@@ -136,6 +136,7 @@ Write-Host "Symbolic Links Created" -ForegroundColor green
 ######
 
 # set windows theme by executing my packed theme file
+# save a new theme from windows "Personalization" and right-click -> save theme for sharing
 Write-Host "`nSetting windows theme..." -ForegroundColor cyan
 $themePath = "$HOME\dotfiles\.etc\windows\tivo_theme.deskthemepack"
 if (Test-Path -Path $themePath) {
@@ -312,24 +313,26 @@ Write-Host "
           ,db'    *     *
          ,d8/       *        *    *
          888
-         \`db\       *     *
-           \`o\`_                    **
+         ``db\       *     *
+           ``o``_                    **
       *               *   *    _      *
             *                 / )
          *    (\__/) *       ( (  *
        ,-.,-.,)    (.,-.,-.,-.) ).,-.,-.
       | @|  ={      }= | @|  / / | @|o |
-     _j__j__j_)     \`-------/ /__j__j__j_
+     _j__j__j_)     ``-------/ /__j__j__j_
      ________(               /___________
-      |  | @| \              || o|O | @|
-      |o |  |,'\       ,   ,\'|  |  |  |  hjw
-     vV\|/vV|\`-'\  ,---\   | \Vv\hjwVv\//v
       |  | @| \              | o|O | @|
       |o |  |,'\       ,   ,'|  |  |  |
      vV\|/vV|``-'\  ,---\   | \Vv\hjwVv\//v
+                _) )    ``. \ /
                (__/       ) )
                          (_/" -ForegroundColor magenta
 
 Write-Host "Setup Complete" -ForegroundColor green
 Read-Host -Prompt "Press [Enter] to exit"
 
+# TODO: look at the list of programs set to run on startup and prompt the user for whether
+# to delete the registry entry.
+# NOTE: ideally, this would be done through each of those programs' settings to "run on startup"
+# but I can't be bothered to do that for each program, so we'll just delete the registry keys for now
