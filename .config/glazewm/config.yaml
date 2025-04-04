@@ -92,8 +92,16 @@ window_rules:
         # Ignores picture-in-picture windows for browsers.
       - window_title: {regex: "[Pp]icture.in.[Pp]icture"}
         window_class: {regex: "Chrome_WidgetWin_1|MozillaDialogClass"}
+      # ignore games (we can do this a better way later probably maybe)
+      - window_process: {equals: "RocketLeague"}
 
   # force windows to workspace 1
+  - commands: ["move --workspace 1", "focus --workspace 1"]
+    match:
+      - window_process: {equals: "neovide"}
+      - window_process: {equals: "brave"}
+
+  # force windows to workspace 2
   - commands: ["move --workspace 2", "focus --workspace 2"]
     match:
       - window_process: {equals: "Discord"}
