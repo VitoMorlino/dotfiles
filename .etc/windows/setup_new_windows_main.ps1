@@ -135,9 +135,9 @@ Write-Host "Symbolic Links Created" -ForegroundColor green
 ### Configure Windows
 ######
 
-# set windows theme by executing my .theme file
+# set windows theme by executing my packed theme file
 Write-Host "`nSetting windows theme..." -ForegroundColor cyan
-$themePath = "$HOME\dotfiles\.etc\windows\tivo_theme.theme"
+$themePath = "$HOME\dotfiles\.etc\windows\tivo_theme.desktopthemepack"
 if (Test-Path -Path $themePath) {
 	&$themePath
 	# TODO: close the settings window that opens when the theme file is executed
