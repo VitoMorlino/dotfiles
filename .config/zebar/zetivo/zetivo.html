@@ -30,7 +30,7 @@
 
       const providers = zebar.createProviderGroup({
         glazewm: { type: 'glazewm' },
-        network: { type: "network" },
+        network: { type: "network", refreshInterval: "15000" },
         cpu: { type: "cpu" },
         date: { type: "date", formatting: "EEE d MMM HH:mm" },
         battery: { type: "battery" },
