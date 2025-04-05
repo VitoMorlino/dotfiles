@@ -10,3 +10,6 @@
 	clean = git-lfs clean -- %f
 [init]
 	defaultBranch = main
+[safe]
+	directory = D:/lifeOS/ ; note: drive letter may need to be changed to match seekerfox
+	directory = D:/backups/lifeOS_backup/lifeOS/ ; note: drive letter may need to be changed to match seekerfox
