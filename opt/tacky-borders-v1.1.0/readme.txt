@@ -1,1 +1,0 @@
-exe built from source files at https://github.com/lukeyou05/tacky-borders
