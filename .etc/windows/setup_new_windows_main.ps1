@@ -330,7 +330,26 @@ Write-Host "
                          (_/" -ForegroundColor magenta
 
 Write-Host "Setup Complete" -ForegroundColor green
-Read-Host -Prompt "Press [Enter] to exit"
+Read-Host -Prompt "Press [Enter] to exit, or type `y` to continue with optional additional setup: "
+
+# TODO: if not 'y', end here
+
+# install optional programs from seekerfox
+$seekerFoxPath = $null
+if ($seekerFox) {
+	#Select-Object -InputObject $seekerFox -ExpandProperty SerialNumber
+	$seekerFoxPath = Select-Object -InputObject $seekerFox -ExpandProperty DriveLetter
+} else {
+	Write-Host "SeekerFox not found" -ForegroundColor magenta
+}
+if (Test-Path -Path "$seekerFoxPath\installers\") {
+	foreach ($file in Get-ChildItem -Path $) {
+		# TODO: ignore 'setup_new_win.cmd'
+		Write-Host "Should we install [$($file.FullName)]? (y/n):"
+		# TODO: if y, execute the file
+	}
+}
+
 
 # TODO: look at the list of programs set to run on startup and prompt the user for whether
 # to delete the registry entry.
