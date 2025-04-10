@@ -1338,7 +1338,6 @@ require("lazy").setup({
 		"folke/todo-comments.nvim",
 		event = "VimEnter",
 		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
-		opts = { signs = false },
 
 		-- add to which-key's chains if which-key is available
 		init = function()
