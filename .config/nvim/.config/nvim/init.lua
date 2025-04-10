@@ -691,6 +691,16 @@ require("lazy").setup({
 				--  All the info you're looking for is in `:help telescope.setup()`
 				--
 				defaults = {
+					vimgrep_arguments = {
+						"rg",
+						"--color=never",
+						"--no-heading",
+						"--with-filename",
+						"--line-number",
+						"--column",
+						"--smart-case",
+						"--hidden", -- include hidden files in the search
+					},
 					--   mappings = {
 					--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
 					--   },
@@ -1261,6 +1271,20 @@ require("lazy").setup({
 				print("no which-key")
 			end
 		end,
+
+		opts = {
+			signs = false,
+			search = {
+				args = {
+					"--color=never",
+					"--no-heading",
+					"--with-filename",
+					"--line-number",
+					"--column",
+					"--hidden", -- include hidden files in the search
+				},
+			},
+		},
 
 		keys = {
 			{
