@@ -218,7 +218,8 @@ keybindings:
     bindings: ["alt+enter"]
 
     # open neovim with the command to go straight to lifeOS
-  - commands: ["shell-exec neovide +VimwikiIndex"]
+  # - commands: ["shell-exec neovide +VimwikiIndex"]
+  - commands: ["shell-exec neovide +edit ~/lifeOS/lifeOS.md"]
     bindings: ["ctrl+enter"]
 
     # Focus the next/previous workspace defined in `workspaces` config.

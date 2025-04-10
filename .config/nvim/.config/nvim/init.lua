@@ -221,6 +221,7 @@ augroup END
 
 function MarkdownSettings()
 	vim.opt_local.wrap = true
+	vim.opt.conceallevel = 2
 end
 
 -- [[ Basic Keymaps ]]
@@ -261,6 +262,18 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- move highlighted lines up/down
 vim.keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv", { desc = "move selected line(s) up" })
 vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv", { desc = "move selected line(s) down" })
+
+-- go to lifeOS
+vim.keymap.set("n", "<leader>gl", function()
+	local lifeOSpath = "~/lifeOS/lifeOS.md"
+	-- NOTE: 'filereadable' returns '1/0' instead of 'true/false',
+	-- but '0' is truthy in lua; so we add "== 1" to check if true
+	if vim.fn.filereadable(vim.fn.expand(lifeOSpath)) == 1 then
+		vim.cmd.edit(lifeOSpath)
+	else
+		print("couldn't find lifeOS at " .. lifeOSpath)
+	end
+end, { desc = "[G]oto [L]ifeOS" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -323,35 +336,100 @@ require("lazy").setup({
 	},
 
 	{
-		"vimwiki/vimwiki",
-		-- we use event = BufWinEnter here because we want to run vimwiki commands from
-		-- the command line when opening neovim (eg."nvim +VimwikiIndex"), so we need
-		-- this plugin to load before the `VimEnter` event
-		event = "BufWinEnter",
-		init = function()
-			vim.g.vimwiki_listsyms = " 󰥪X"
-			vim.g.vimwiki_global_ext = 0 -- 0 means don't treat non-wiki files as vimwiki files
-			vim.g.vimwiki_ext2syntax = {
-				[".md"] = "markdown",
-				[".markdown"] = "markdown",
-				[".mdown"] = "markdown",
-			}
-
-			local life_wiki = {}
-			life_wiki.path = "~/lifeOS/"
-			life_wiki.index = "lifeOS"
-			life_wiki.ext = ".md"
-			life_wiki.syntax = "markdown"
-			vim.g.vimwiki_list = { life_wiki }
-		end,
-		keys = {
-			{
-				"<leader>gl",
-				"<cmd>VimwikiIndex 1<CR>",
-				desc = "[G]oto [L]ifeOS",
+		"epwalsh/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		lazy = true,
+		ft = "markdown",
+		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		-- event = {
+		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+		--   -- refer to `:h file-pattern` for more examples
+		--   "BufReadPre path/to/my-vault/*.md",
+		--   "BufNewFile path/to/my-vault/*.md",
+		-- },
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- Required.
+		},
+		opts = {
+			workspaces = {
+				{
+					name = "lifeOS",
+					path = "~/lifeOS",
+				},
+				-- {
+				-- 	name = "work",
+				-- 	path = "~/vaults/work",
+				-- },
 			},
+			-- don't let obsidian.nvim automatically add/remove frontmatter
+			disable_frontmatter = true,
+			-- or, customize how obsidian.nvim handles the frontmatter below
+			-- but... then we have to another issue: we're telling obsidian to load
+			-- for all markdown files, so obsidian will try to add/remove frontmatter
+			-- on any markdown files, even if they're not in my obsidian vault.
+			-- the solution should be that "BufReadPre" example up there, but it's
+			-- not working as expected with the concat'd string.
+			-- i only got it to work with an absolute path
+			note_frontmatter_func = function(note)
+				-- Add the title of the note as an alias.
+				if note.title then
+					note:add_alias(note.title)
+				end
+
+				local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+
+				-- `note.metadata` contains any manually added fields in the frontmatter.
+				-- So here we just make sure those fields are kept in the frontmatter.
+				if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+					for k, v in pairs(note.metadata) do
+						out[k] = v
+					end
+				end
+
+				-- TODO: put a ternary in the above local out instead of doing this after the fact
+				-- or just do it in that loop up there, silly goose
+				-- (necessary because, if empty, obsidian.nvim adds it with empty brackets
+				-- instead of not adding a line at all)
+				if vim.tbl_isempty(note.aliases) then
+					out.aliases = nil
+				end
+
+				return out
+			end,
 		},
 	},
+
+	-- {
+	-- 	"vimwiki/vimwiki",
+	-- 	-- we use event = BufWinEnter here because we want to run vimwiki commands from
+	-- 	-- the command line when opening neovim (eg."nvim +VimwikiIndex"), so we need
+	-- 	-- this plugin to load before the `VimEnter` event
+	-- 	event = "BufWinEnter",
+	-- 	init = function()
+	-- 		vim.g.vimwiki_listsyms = " 󰥪X"
+	-- 		vim.g.vimwiki_global_ext = 0 -- 0 means don't treat non-wiki files as vimwiki files
+	-- 		vim.g.vimwiki_ext2syntax = {
+	-- 			[".md"] = "markdown",
+	-- 			[".markdown"] = "markdown",
+	-- 			[".mdown"] = "markdown",
+	-- 		}
+	--
+	-- 		local life_wiki = {}
+	-- 		life_wiki.path = "~/lifeOS/"
+	-- 		life_wiki.index = "lifeOS"
+	-- 		life_wiki.ext = ".md"
+	-- 		life_wiki.syntax = "markdown"
+	-- 		vim.g.vimwiki_list = { life_wiki }
+	-- 	end,
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>gl",
+	-- 			"<cmd>VimwikiIndex 1<CR>",
+	-- 			desc = "[G]oto [L]ifeOS",
+	-- 		},
+	-- 	},
+	-- },
 
 	{
 		"mfussenegger/nvim-dap",
@@ -501,7 +579,7 @@ require("lazy").setup({
 			-- override markdown Title highlight to match this plugin's highlights
 			vim.cmd.highlight({ "Title", "guifg=" .. lightPurple })
 			-- vimwiki overrides markdown rendering. we can take it back with this next line
-			vim.treesitter.language.register("markdown", "vimwiki")
+			-- vim.treesitter.language.register("markdown", "vimwiki")
 		end,
 		opts = {
 			sign = {
