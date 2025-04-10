@@ -215,7 +215,7 @@ augroup FileTypeSettings
     autocmd!
     autocmd BufEnter * lua if vim.bo.filetype == 'markdown' then MarkdownSettings() end
     autocmd BufEnter * lua if vim.bo.filetype == 'text' then MarkdownSettings() end
-    autocmd BufEnter * lua if vim.bo.filetype == 'vimwiki' then MarkdownSettings() end
+    "autocmd BufEnter * lua if vim.bo.filetype == 'vimwiki' then MarkdownSettings() end
 augroup END
 ]])
 
