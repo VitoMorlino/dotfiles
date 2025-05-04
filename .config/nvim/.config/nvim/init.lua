@@ -227,6 +227,15 @@ end
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- jump to the next/previous item in a quickfix list
+vim.keymap.set("n", "]q", "<cmd>cnext<CR>zz", { desc = "Next [Q]uickfix item" })
+vim.keymap.set("n", "[q", "<cmd>cprev<CR>zz", { desc = "Next [Q]uickfix item" })
+
+-- use backspace to jump back to previous cursor jump position (even previous buffers)
+-- NOTE: use <C-i> to jump forward
+vim.keymap.set("n", "<BS>", "<C-o>")
+vim.keymap.set("n", "<S-BS>", "<C-i>") -- NOTE: shift-backspace wont work in some terminal emulators
+
 -- center the current line in the page when jumping down and up
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
