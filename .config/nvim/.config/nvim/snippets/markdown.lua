@@ -16,25 +16,17 @@ return {
 		"+lifeOS new game",
 		fmt(
 			[[
-	# {filename}
+
 
 	## What are we doing?
 	- {entry}
 	- 
-	
+
 	## Future plans
 	- 
 	- 
 	]],
-			{
-				-- we have to put this in a funtion node so the file name is evaluated where the snippet is being expanded
-				-- otherwise the filename is read as this file (`vimwiki.lua`), and not the file the snippet is being generated in
-				filename = f(function(_args, snip)
-					local name = vim.fn.fnamemodify(vim.fn.expand("%"), ":t:r")
-					return name or "oops"
-				end),
-				entry = i(0),
-			}
+			{ entry = i(0) }
 		)
 	),
 
