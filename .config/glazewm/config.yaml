@@ -96,6 +96,7 @@ window_rules:
       - window_process: {equals: "RocketLeague"}
       - window_process: {equals: "NWX-Win64-Shipping"} # Nightingale
       - window_process: {equals: "OblivionRemastered-Win64-Shipping"} # Oblivion
+      - window_process: {equals: "SandFall-Win64-Shipping"} # clair obscur exp33
 
   # force windows to workspace 1
   - commands: ["move --workspace 1", "focus --workspace 1"]
