@@ -330,25 +330,33 @@ Write-Host "
                          (_/" -ForegroundColor magenta
 
 Write-Host "Setup Complete" -ForegroundColor green
-Read-Host -Prompt "Press [Enter] to exit, or type `y` to continue with optional additional setup: "
 
-# TODO: if not 'y', end here
+$ShouldContinue = $(Write-Host "Press [Enter] to exit, or type `y` to continue with optional additional setup: " -nonewline; Read-Host)
+if (!($ShouldContinue -eq 'y')) {
+	exit
+}
 
-# install optional programs from seekerfox
-$seekerFoxPath = $null
-if ($seekerFox) {
-	#Select-Object -InputObject $seekerFox -ExpandProperty SerialNumber
-	$seekerFoxPath = Select-Object -InputObject $seekerFox -ExpandProperty DriveLetter
-} else {
-	Write-Host "SeekerFox not found" -ForegroundColor magenta
+
+######
+### optional additional setup
+######
+
+# NOTE: add chocolatey packages to this list to be optionally installed
+# find package names at https://community.chocolatey.org/packages
+$optional_chocopacks = 
+	"protonpass", # proton password manager
+	"ps-remote-play" # playstation remote-play from pc
+
+$confirmed_optional_chocopacks
+foreach ($package in $optional_chocopacks) {
+	# $ShouldInstallOptional = 'n'
+	# should we install [this pack]?
+	# if yes, add to $confirmed
 }
-if (Test-Path -Path "$seekerFoxPath\installers\") {
-	foreach ($file in Get-ChildItem -Path $) {
-		# TODO: ignore 'setup_new_win.cmd'
-		Write-Host "Should we install [$($file.FullName)]? (y/n):"
-		# TODO: if y, execute the file
-	}
-}
+
+Write-Host "`nInstalling optional packages..." -ForegroundColor cyan
+choco install -y $confirmed_optional_chocopacks # (-y confirms running scripts without requiring user input)
+Write-Host "Finished installing optional packages." -ForegroundColor green
 
 
 # TODO: look at the list of programs set to run on startup and prompt the user for whether
