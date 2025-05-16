@@ -395,6 +395,34 @@ require("lazy").setup({
 				-- 	path = "~/vaults/work",
 				-- },
 			},
+
+			ui = { enable = false }, -- turned off because markdown display clashed with render-markdown.nvim
+
+			templates = {
+				folder = "templates",
+			},
+
+			-- optionally put all notes in a specific directory
+			-- notes_subdir = "notes",
+
+			daily_notes = {
+				folder = "journal",
+				-- template = "journal_entry.md"
+				-- date_format = "%Y-%m-%d",
+				-- default_tags = { "journal-entry" },
+			},
+
+			-- by default, obsidian.nvim names files with a timestamp and random characters
+			-- here, we override that, and just use the title or basic timestamp
+			note_id_func = function(title)
+				if title == nil then
+					---@diagnostic disable-next-line: param-type-mismatch
+					local timestamp = os.time(os.date("*t")) -- get local timestamp
+					title = os.date("%Y-%m-%d_%H%M%S", timestamp)
+				end
+				return title
+			end,
+
 			-- don't let obsidian.nvim automatically add/remove frontmatter
 			disable_frontmatter = true,
 			-- or, customize how obsidian.nvim handles the frontmatter below
