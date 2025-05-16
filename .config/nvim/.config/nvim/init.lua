@@ -373,6 +373,56 @@ require("lazy").setup({
 		end,
 
 		keys = {
+			{
+				"<leader>ole",
+				function()
+					local telescope_opts = {
+						prompt_title = "~ choose a file to link to ~",
+						shorten_path = false,
+						attach_mappings = function(_, map)
+							map("i", "<CR>", function(prompt_bufnr)
+								local filename = require("telescope.actions.state").get_selected_entry().filename
+								filename = vim.fn.fnamemodify(filename, ":r") -- cut off the file extension
+								require("telescope.actions").close(prompt_bufnr)
+								vim.cmd("normal! gv") -- reselect visual selection
+								vim.cmd("ObsidianLink " .. filename)
+							end)
+							return true
+						end,
+					}
+
+					-- send ESC here to break out of visual mode and mark the selection as
+					-- a previous visual selection so we can reselect it later with `gv`
+					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+
+					-- we have to use vim.schedule here because nvim_feedkeys (above) feeds the keys on the
+					-- next event loop and we need to guarantee that find_files runs AFTER the Esc key
+					-- is sent to save the visual selection
+					vim.schedule(function()
+						require("telescope.builtin").find_files(telescope_opts)
+					end)
+				end,
+				mode = "v",
+				desc = "[O]bsidian [L]ink to [E]xisting file",
+			},
+
+			-- this isn't currently working as i'd like it to.
+			-- it replaces the selected text with the given name for the new note
+			-- it should preserve the selected text and link it to the given name
+			-- eg: [[linked_note_name|selected text to be preserved]]
+			--
+			-- we may be able to work around this by substituting selection
+			-- to wrap it with square brackets and add the input filename
+			{
+				"<leader>oln",
+				function()
+					local filename = vim.fn.input("Enter a name for the new note: ")
+					vim.cmd("ObsidianLinkNew " .. filename)
+				end,
+				mode = "v",
+				desc = "[O]bsidian [L]ink to [N]ew file",
+			},
+
 			{ "<leader>sfo", "<cmd>ObsidianQuickSwitch<CR>", desc = "[S]earch [F]iles in [O]bsidian" },
 			{ "<leader>on", "<cmd>ObsidianNew<CR>", desc = "[O]bsidian [N]ew" },
 			{ "<leader>oq", "<cmd>ObsidianNew _inbox/<CR>", desc = "[O]bsidian [Q]uicknote" },
