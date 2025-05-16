@@ -360,6 +360,30 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- Required.
 		},
+
+		init = function()
+			-- add to which-key's chains if which-key is available
+			local ok, whichkey = pcall(require, "which-key")
+			if ok then
+				whichkey.add({ "<leader>o", group = "[O]bsidian", mode = "nv" })
+				whichkey.add({ "<leader>ol", group = "[O]bsidian [L]ink", mode = "v" })
+			else
+				print("no which-key")
+			end
+		end,
+
+		keys = {
+			{ "<leader>sfo", "<cmd>ObsidianQuickSwitch<CR>", desc = "[S]earch [F]iles in [O]bsidian" },
+			{ "<leader>on", "<cmd>ObsidianNew<CR>", desc = "[O]bsidian [N]ew" },
+			{ "<leader>oq", "<cmd>ObsidianNew _inbox/<CR>", desc = "[O]bsidian [Q]uicknote" },
+			{ "<leader>og", "<cmd>ObsidianSearch<CR>", desc = "[O]bsidian [G]rep" },
+			{ "<leader>ob", "<cmd>ObsidianBacklinks<CR>", desc = "[O]bsidian [B]acklinks" },
+
+			-- extract the selected text from the current note and put it in its own new note
+			{ "<leader>ox", "<cmd>ObsidianExtractNote<CR>", mode = "v", desc = "[O]bsidian e[X]tract" },
+			-- NOTE: :ObsidianToday can take an optional argument for offset (":ObsidianToday -1" = yesterday)
+			{ "<leader>oj", "<cmd>ObsidianToday<CR>", desc = "[O]bsidian [J]ournal (today)" },
+		},
 		opts = {
 			workspaces = {
 				{
