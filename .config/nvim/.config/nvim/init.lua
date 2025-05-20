@@ -167,9 +167,7 @@ vim.opt.showmode = false
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
-end)
+-- vim.schedule(function() vim.opt.clipboard = "unnamedplus" end)
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -226,6 +224,12 @@ end
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+
+-- yank/paste to/from system clipboard
+vim.keymap.set("n", "<leader>y", '"+y')
+vim.keymap.set("v", "<leader>y", '"+y')
+vim.keymap.set("n", "<leader>Y", '"+Y')
+vim.keymap.set("x", "<leader>p", '"_dP')
 
 -- jump to the next/previous item in a quickfix list
 vim.keymap.set("n", "]q", "<cmd>cnext<CR>zz", { desc = "Next [Q]uickfix item" })
