@@ -478,7 +478,8 @@ require("lazy").setup({
 			end,
 
 			-- don't let obsidian.nvim automatically add/remove frontmatter
-			disable_frontmatter = true,
+			-- disable_frontmatter = true,
+			--
 			-- or, customize how obsidian.nvim handles the frontmatter below
 			-- but... then we have to another issue: we're telling obsidian to load
 			-- for all markdown files, so obsidian will try to add/remove frontmatter
@@ -486,6 +487,11 @@ require("lazy").setup({
 			-- the solution should be that "BufReadPre" example up there, but it's
 			-- not working as expected with the concat'd string.
 			-- i only got it to work with an absolute path
+			--
+			-- update:
+			-- hmm.. false alarm. obsidian.nvim doesn't update frontmatter unless
+			-- we're in an obsidian vault
+
 			note_frontmatter_func = function(note)
 				-- Add the title of the note as an alias.
 				if note.title then
@@ -502,12 +508,13 @@ require("lazy").setup({
 					end
 				end
 
-				-- TODO: put a ternary in the above local out instead of doing this after the fact
-				-- or just do it in that loop up there, silly goose
-				-- (necessary because, if empty, obsidian.nvim adds it with empty brackets
-				-- instead of not adding a line at all)
+				-- Necessary because, if empty, obsidian.nvim adds it with empty brackets
+				-- instead of not adding a line at all
 				if vim.tbl_isempty(note.aliases) then
 					out.aliases = nil
+				end
+				if vim.tbl_isempty(note.tags) then
+					out.tags = nil
 				end
 
 				return out
