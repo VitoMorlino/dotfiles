@@ -229,6 +229,9 @@ end
 vim.keymap.set("n", "<leader>y", '"+y')
 vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
+vim.keymap.set("n", "<leader>p", '"+p')
+vim.keymap.set("n", "<leader>P", '"+P')
+vim.keymap.set("v", "<leader>p", '"+p')
 vim.keymap.set("x", "<leader>p", '"_dP')
 
 -- jump to the next/previous item in a quickfix list
