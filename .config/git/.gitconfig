@@ -2,7 +2,7 @@
 	autocrlf = true
 [user]
 	name = VitoMorlino
-	email = vjmorlino@gmail.com
+	email = 17305030+VitoMorlino@users.noreply.github.com
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
