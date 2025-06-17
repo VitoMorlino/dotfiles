@@ -81,6 +81,9 @@ $chocopacks =
 
 Write-Host "`nInstalling packages..." -ForegroundColor cyan
 choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
+# install wsl2 separately to use params (windows subsystem for linux)
+# /Retry:true creates a self-deleting task to retry install on restart if WSL1 wasn't already on machine
+choco install -y wsl2 --params "/Version:2 /Retry:true"
 Write-Host "Finished installing packages." -ForegroundColor green
 
 # clear the desktop because some of the above installers add shortcuts to the desktop
