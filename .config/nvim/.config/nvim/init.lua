@@ -435,6 +435,7 @@ require("lazy").setup({
 			{ "<leader>oq", "<cmd>ObsidianNew _inbox/<CR>", desc = "[O]bsidian [Q]uicknote" },
 			{ "<leader>og", "<cmd>ObsidianSearch<CR>", desc = "[O]bsidian [G]rep" },
 			{ "<leader>ob", "<cmd>ObsidianBacklinks<CR>", desc = "[O]bsidian [B]acklinks" },
+			{ "<leader>or", "<cmd>ObsidianRename<CR>", desc = "[O]bsidian [R]ename file" },
 
 			-- extract the selected text from the current note and put it in its own new note
 			{ "<leader>ox", "<cmd>ObsidianExtractNote<CR>", mode = "v", desc = "[O]bsidian e[X]tract" },
