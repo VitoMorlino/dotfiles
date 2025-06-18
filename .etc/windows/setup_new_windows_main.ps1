@@ -153,6 +153,8 @@ if (Test-Path -Path $themePath) {
 $seekerFox = Get-WmiObject -Class Win32_Volume -Filter "Label = 'SeekerFox2'"
 $seekerFoxPath = $null
 if ($seekerFox) {
+	# NOTE: leaving this commented line here in case we want to use the serial number to identify seekerfox later
+	#
 	#Select-Object -InputObject $seekerFox -ExpandProperty SerialNumber
 	$seekerFoxPath = Select-Object -InputObject $seekerFox -ExpandProperty DriveLetter
 } else {
@@ -186,7 +188,7 @@ reg export "HKU" "$registryBackupFilePath\hkey_users.reg"
 Write-Host "Exporting HKEY_CURRENT_CONFIG..."
 reg export "HKCC" "$registryBackupFilePath\hkey_current_config.reg"
 
-# add my registry edits by importing all .reg files in the keys folder
+# add my registry edits by importing all .reg files in the registry_keys folder
 Write-Host "`nAdding my registry edits to change Windows settings" -ForegroundColor cyan
 $registryKeysDir = "$HOME\dotfiles\.etc\windows\registry_keys\"
 foreach ($file in Get-ChildItem -Path $registryKeysDir) {
@@ -335,7 +337,7 @@ Write-Host "
 Write-Host "Setup Complete" -ForegroundColor green
 
 $ShouldContinue = $(Write-Host "Press [Enter] to exit, or type `y` to continue with optional additional setup: " -nonewline; Read-Host)
-if (!($ShouldContinue -eq 'y')) {
+if ($ShouldContinue -ne 'y') {
 	exit
 }
 
