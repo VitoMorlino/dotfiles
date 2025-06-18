@@ -3,7 +3,7 @@
 ###
 
 $ignore_list = @("PSPath", "PSParentPath", "PSChildName", "PSProvider")
-$whitelist_path = "./startup_registry_whitelist.txt"
+$whitelist_path = "$HOME/dotfiles/.etc/windows/startup_registry_whitelist.txt"
 if (Test-Path -Path $whitelist_path) {
         $whitelist = Get-Content -Path $whitelist_path
         $ignore_list += $whitelist
@@ -38,7 +38,7 @@ do {
         }
 
         if ($entries_to_remove.count -eq 0) {
-                Write-Host "No on-startup entries to remove. Thanks for playing!"
+                Write-Host "No on-startup entries to remove."
                 break
         }
 
