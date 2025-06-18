@@ -346,25 +346,10 @@ if ($ShouldContinue -ne 'y') {
 ### optional additional setup
 ######
 
-# NOTE: add chocolatey packages to this list to be optionally installed
-# find package names at https://community.chocolatey.org/packages
-$optional_chocopacks = 
-	"protonpass", # proton password manager
-	"ps-remote-play" # playstation remote-play from pc
-
-$confirmed_optional_chocopacks
-foreach ($package in $optional_chocopacks) {
-	# $ShouldInstallOptional = 'n'
-	# should we install [this pack]?
-	# if yes, add to $confirmed
+$optionalSetupPath = "$HOME\dotfiles\.etc\windows\setup_optional.ps1"
+if (Test-Path -Path $optionalSetupPath) {
+	&$optionalSetupPath
+} else {
+	Write-Host "Optional setup failed. Path not found: $optionalSetupPath" -ForegroundColor red
 }
 
-Write-Host "`nInstalling optional packages..." -ForegroundColor cyan
-choco install -y $confirmed_optional_chocopacks # (-y confirms running scripts without requiring user input)
-Write-Host "Finished installing optional packages." -ForegroundColor green
-
-
-# TODO: look at the list of programs set to run on startup and prompt the user for whether
-# to delete the registry entry.
-# NOTE: ideally, this would be done through each of those programs' settings to "run on startup"
-# but I can't be bothered to do that for each program, so we'll just delete the registry keys for now
