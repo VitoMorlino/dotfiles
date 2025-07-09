@@ -5,13 +5,14 @@
   "IS_MAXIMIZED": false,
   "IS_MINIMIZED": false,
   "WINDOW_BOUNDS": {
-    "x": 9,
-    "y": 28,
-    "width": 2176,
-    "height": 1197
+    "x": -1527,
+    "y": 318,
+    "width": 1518,
+    "height": 826
   },
   "BACKGROUND_COLOR": "#121214",
   "audioSubsystem": "experimental",
   "useLegacyAudioDevice": false,
-  "chromiumSwitches": {}
+  "chromiumSwitches": {},
+  "offloadAdmControls": false
 }
