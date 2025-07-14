@@ -25,11 +25,11 @@ Write-Host "Finished installing optional packages." -ForegroundColor green
 ######
 
 Write-Host "`nInteractively cleaning out on-startup registry entries..." -ForegroundColor cyan
-$cleanStartupRegistryPath = "$HOME\dotfiles\.etc\windows\clean_startup_registry.ps1"
-if (Test-Path -Path $cleanStartupRegistryPath) {
-	&$cleanStartupRegistryPath
+$clean_startup_registry_path = "$HOME\dotfiles\.etc\windows\clean_startup_registry.ps1"
+if (Test-Path -Path $clean_startup_registry_path) {
+	&$clean_startup_registry_path
 } else {
-	Write-Host "On-Startup cleanup failed. Path not found: $cleanStartupRegistryPath" -ForegroundColor red
+	Write-Host "On-Startup cleanup failed. Path not found: $clean_startup_registry_path" -ForegroundColor red
 }
 
 Write-Host "Optional setup complete! Thanks for playing!" -ForegroundColor green

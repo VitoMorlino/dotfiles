@@ -1,3 +1,5 @@
+# TODO: extract the symlink process to its own file so i can run it standalone sometimes
+
 ######
 ### Debloat Windows by uninstalling default apps that I don't want
 ######
@@ -6,7 +8,7 @@
 # Get-AppxPackage | Select Name, PackageFullName | Out-Host
 
 # NOTE: add package names to this list to be uninstalled
-$appsToUninstall = 
+$apps_to_uninstall = 
 	"Microsoft.OneDriveSync",
 	"Microsoft.YourPhone",
 	"Microsoft.WindowsCamera",
@@ -21,9 +23,9 @@ $appsToUninstall =
 	"MSTeams",
 	"Microsoft.MicrosoftEdge.Stable"
 
-$failedUninstalls = @()
+$failed_uninstalls = @()
 Write-Host "Uninstalling apps I don't want..." -ForegroundColor cyan
-foreach ($app in $appsToUninstall) {
+foreach ($app in $apps_to_uninstall) {
 	# Get the package, if it exists
         $package = Get-AppxPackage | Where-Object { $_.Name -eq $app -or $_.PackageFullName -eq $app }
 		
@@ -32,19 +34,19 @@ foreach ($app in $appsToUninstall) {
 		        $package | Remove-AppxPackage -ErrorAction Stop
 		} catch {
 			Write-Host "Error while trying to uninstall $($line): $_" -ForegroundColor magenta
-			$failedUninstalls += $app
+			$failed_uninstalls += $app
 		}
         } else {
-		$failedUninstalls += $app
+		$failed_uninstalls += $app
         }
 }
 
 # If there were unsuccessful attempts, print a warning
-if ($failedUninstalls) {
+if ($failed_uninstalls) {
 	Write-Host "WARNING: The following packages were not found and could not be uninstalled:" -ForegroundColor yellow
 
 	# Print each package name that was not found
-	foreach ($package in $failedUninstalls) {
+	foreach ($package in $failed_uninstalls) {
 		Write-Host "`t$package" -ForegroundColor yellow
 	}
 }
@@ -81,9 +83,6 @@ $chocopacks =
 
 Write-Host "`nInstalling packages..." -ForegroundColor cyan
 choco install -y $chocopacks # (-y confirms running scripts without requiring user input)
-# install wsl2 separately to use params (windows subsystem for linux)
-# /Retry:true creates a self-deleting task to retry install on restart if WSL1 wasn't already on machine
-choco install -y wsl2 --params "/Version:2 /Retry:true"
 Write-Host "Finished installing packages." -ForegroundColor green
 
 # clear the desktop because some of the above installers add shortcuts to the desktop
@@ -141,22 +140,21 @@ Write-Host "Symbolic Links Created" -ForegroundColor green
 # set windows theme by executing my packed theme file
 # save a new theme from windows "Personalization" and right-click -> save theme for sharing
 Write-Host "`nSetting windows theme..." -ForegroundColor cyan
-$themePath = "$HOME\dotfiles\.etc\windows\tivo_theme.deskthemepack"
-if (Test-Path -Path $themePath) {
-	&$themePath
+$win_theme_path = "$HOME\dotfiles\.etc\windows\tivo_theme.deskthemepack"
+if (Test-Path -Path $win_theme_path) {
+	&$win_theme_path
 	# TODO: close the settings window that opens when the theme file is executed
 } else {
-	Write-Host "couldn't find theme file at $themePath" -ForegroundColor red
+	Write-Host "couldn't find theme file at $win_theme_path" -ForegroundColor red
 }
 
 # look for seekerfox usb drive
-$seekerFox = Get-WmiObject -Class Win32_Volume -Filter "Label = 'SeekerFox2'"
-$seekerFoxPath = $null
-if ($seekerFox) {
+$seekerfox = Get-WmiObject -Class Win32_Volume -Filter "Label = 'SeekerFox2'"
+$seekerfox_path = $null
+if ($seekerfox) {
 	# NOTE: leaving this commented line here in case we want to use the serial number to identify seekerfox later
-	#
-	#Select-Object -InputObject $seekerFox -ExpandProperty SerialNumber
-	$seekerFoxPath = Select-Object -InputObject $seekerFox -ExpandProperty DriveLetter
+	#Select-Object -InputObject $seekerfox -ExpandProperty SerialNumber
+	$seekerfox_path = Select-Object -InputObject $seekerfox -ExpandProperty DriveLetter
 } else {
 	Write-Host "SeekerFox not found" -ForegroundColor magenta
 }
@@ -164,43 +162,43 @@ if ($seekerFox) {
 # make a backup of the registry
 Write-Host "`nBacking up the registry..." -ForegroundColor cyan
 $timestamp = Get-Date -Format "yyyy MM dd HH:mm" | ForEach-Object { $_ -replace ":", "."  -replace " ", "." }
-$computerName = $env:computername
-$registryBackupFileName = "$computerName.registry_before_setup_$timestamp"
-$registryBackupDirName = "registry_backups"
-$registryBackupDirPath = ""
-$registryBackupFilePath = ""
-if (Test-Path -Path "$seekerFoxPath\backups") {
-	$registryBackupDirPath = "$seekerFoxPath\backups\$registryBackupDirName"
+$computer_name = $env:computername
+$registry_backup_filename = "$computer_name.registry_before_setup_$timestamp"
+$registry_backup_dir_name = "registry_backups"
+$registry_backup_dir_path = ""
+$registry_backup_file_path = ""
+if (Test-Path -Path "$seekerfox_path\backups") {
+	$registry_backup_dir_path = "$seekerfox_path\backups\$registry_backup_dir_name"
 } else {
-	$registryBackupDirPath = "$HOME\$registryBackupDirName"
-	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registryBackupDirPath." -ForegroundColor yellow
+	$registry_backup_dir_path = "$HOME\$registry_backup_dir_name"
+	Write-Host "Couldn't find seekerfox's backup folder. Creating backup at $registry_backup_dir_path." -ForegroundColor yellow
 }
-$registryBackupFilePath = "$registryBackupDirPath\$registryBackupFileName"
-[System.IO.Directory]::CreateDirectory("$registryBackupFilePath")
+$registry_backup_file_path = "$registry_backup_dir_path\$registry_backup_filename"
+[System.IO.Directory]::CreateDirectory("$registry_backup_file_path")
 Write-Host "Exporting HKEY_CLASSES_ROOT..."
-reg export "HKCR" "$registryBackupFilePath\hkey_classes_root.reg"
+reg export "HKCR" "$registry_backup_file_path\hkey_classes_root.reg"
 Write-Host "Exporting HKEY_CURRENT_USER..."
-reg export "HKCU" "$registryBackupFilePath\hkey_current_user.reg"
+reg export "HKCU" "$registry_backup_file_path\hkey_current_user.reg"
 Write-Host "Exporting HKEY_LOCAL_MACHINE..."
-reg export "HKLM" "$registryBackupFilePath\hkey_local_machine.reg"
+reg export "HKLM" "$registry_backup_file_path\hkey_local_machine.reg"
 Write-Host "Exporting HKEY_USERS..."
-reg export "HKU" "$registryBackupFilePath\hkey_users.reg"
+reg export "HKU" "$registry_backup_file_path\hkey_users.reg"
 Write-Host "Exporting HKEY_CURRENT_CONFIG..."
-reg export "HKCC" "$registryBackupFilePath\hkey_current_config.reg"
+reg export "HKCC" "$registry_backup_file_path\hkey_current_config.reg"
 
 # add my registry edits by importing all .reg files in the registry_keys folder
 Write-Host "`nAdding my registry edits to change Windows settings" -ForegroundColor cyan
-$registryKeysDir = "$HOME\dotfiles\.etc\windows\registry_keys\"
-foreach ($file in Get-ChildItem -Path $registryKeysDir) {
+$registry_keys_dir = "$HOME\dotfiles\.etc\windows\registry_keys\"
+foreach ($file in Get-ChildItem -Path $registry_keys_dir) {
 	Write-Host "Processing file: $($file.FullName)"
 	&reg import $($file.FullName)
 }
 
 # install fonts
 Write-Host "`nInstalling fonts:"
-$fontDir = "$HOME\dotfiles\usr\fonts\"
-$fontList = Get-ChildItem -Path $fontDir -Include ('*.fon','*.otf','*.ttc','*.ttf') -Recurse
-foreach ($font in $fontList) {
+$font_dir = "$HOME\dotfiles\usr\fonts\"
+$font_list = Get-ChildItem -Path $font_dir -Include ('*.fon','*.otf','*.ttc','*.ttf') -Recurse
+foreach ($font in $font_list) {
 
 	Write-Host "Installing font: " $font.BaseName
 	Copy-Item $font "C:\Windows\fonts"
@@ -213,24 +211,24 @@ foreach ($font in $fontList) {
 
 # make translucent taskbar run on startup
 Write-Host "`nAdding translucent taskbar to run on startup:"
-$ttbPortablePath = "$HOME\dotfiles\.config\translucenttb\ttb_portable\translucenttb.exe"
-if (Test-Path -Path $ttbPortablePath) {
-	reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "TranslucentTB" /t REG_SZ /f /d "$ttbPortablePath"
+$ttb_portable_path = "$HOME\dotfiles\.config\translucenttb\ttb_portable\translucenttb.exe"
+if (Test-Path -Path $ttb_portable_path) {
+	reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "TranslucentTB" /t REG_SZ /f /d "$ttb_portable_path"
 	# run ttb now so we don't have to wait for next startup
-	&$ttbPortablePath
+	&$ttb_portable_path
 } else {
-	Write-Host "Couldn't find translucent taskbar at [$ttbPortablePath]" -ForegroundColor yellow
+	Write-Host "Couldn't find translucent taskbar at [$ttb_portable_path]" -ForegroundColor yellow
 }
 
 # make glaze window manager run on startup
 Write-Host "`nAdding glaze window manager to run on startup:"
-$glazewmPath = "$env:ProgramFiles\glzr.io\glazewm\glazewm.exe"
-if (Test-Path -Path $glazewmPath) {
-	reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "GlazeWM" /t REG_SZ /f /d "$glazewmPath"
+$glazewm_path = "$env:ProgramFiles\glzr.io\glazewm\glazewm.exe"
+if (Test-Path -Path $glazewm_path) {
+	reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "GlazeWM" /t REG_SZ /f /d "$glazewm_path"
 	# run glazewm now so we don't have to wait for next startup
-	&$glazewmPath
+	&$glazewm_path
 } else {
-	Write-Host "Couldn't find glaze window manager at [$glazewmPath]" -ForegroundColor yellow
+	Write-Host "Couldn't find glaze window manager at [$glazewm_path]" -ForegroundColor yellow
 }
 
 
@@ -243,13 +241,13 @@ Write-Host "Registry edits complete." -ForegroundColor green
 
 Write-Host "`nSetting up environment variables..." -ForegroundColor cyan
 # add my bin folder to Windows's PATH variable
-$binPath = "$HOME\bin"
+$home_bin_path = "$HOME\bin"
 $scope = "User" # scope options: "Process", "User", "Machine"
-$regexEscapedPath = [regex]::Escape($binPath)
-$pathArray = [System.Environment]::GetEnvironmentVariable('PATH', $scope) -split ';'
-$pathArray = $pathArray | Where-Object { $_ -notMatch "^$regexEscapedPath\\?" }
-$newPath = ($pathArray + $binPath) -join ';'
-[System.Environment]::SetEnvironmentVariable('PATH', $newPath, $scope)
+$regex_escaped_bin_path = [regex]::Escape($home_bin_path)
+$path_array = [System.Environment]::GetEnvironmentVariable('PATH', $scope) -split ';'
+$path_array = $pathArray | Where-Object { $_ -notMatch "^$regex_escaped_bin_path\\?" }
+$new_path = ($path_array + $home_bin_path) -join ';'
+[System.Environment]::SetEnvironmentVariable('PATH', $new_path, $scope)
 
 # add HOME as an environment variable
 [System.Environment]::SetEnvironmentVariable('HOME', $HOME, $scope)
@@ -260,14 +258,14 @@ $newPath = ($pathArray + $binPath) -join ';'
 ######
 
 Write-Host "Setting up personal folders in home directory..." -ForegroundColor cyan
-$localLifeOSPath = "$HOME\lifeOS"
-$remoteLifeOSPath = "$seekerFoxPath\lifeOS"
-[System.IO.Directory]::CreateDirectory($localLifeOSPath)
+$local_lifeOS_path = "$HOME\lifeOS"
+$remote_lifeOS_path = "$seekerfox_path\lifeOS"
+[System.IO.Directory]::CreateDirectory($local_lifeOS_path)
 [System.IO.Directory]::CreateDirectory("$HOME\projects")
-if (Test-Path -Path $remoteLifeOSPath) {
-	&git clone $remoteLifeOSPath $localLifeOSPath
+if (Test-Path -Path $remote_lifeOS_path) {
+	&git clone $remote_lifeOS_path $local_lifeOS_path
 } else {
-	Write-Host "Failed to clone lifeOS. Path not found: $remoteLifeOSPath" -ForegroundColor magenta
+	Write-Host "Failed to clone lifeOS. Path not found: $remote_lifeOS_path" -ForegroundColor magenta
 }
 
 
@@ -282,33 +280,33 @@ if (Test-Path -Path $remoteLifeOSPath) {
 # - copy "~/AppData/Local/Discord/app-1.0.9184/installer.db" to "~/AppData/Local/Discord/"
 # The following script will find those files and take care of that.
 Write-Host "`nFixing discord's install. Hopefully in future versions, we won't have to do this." -ForegroundColor cyan
-$discordFixPath = "$HOME\dotfiles\.etc\windows\hack_fixes\discord_install_fix.ps1"
-if (Test-Path -Path $discordFixPath) {
+$discord_fix_path = "$HOME\dotfiles\.etc\windows\hack_fixes\discord_install_fix.ps1"
+if (Test-Path -Path $discord_fix_path) {
 	# run the script
-	&$discordFixPath
+	&$discord_fix_path
 } else {
-	Write-Host "Discord fix failed. Path not found: $discordFixPath" -ForegroundColor red
+	Write-Host "Discord fix failed. Path not found: $discord_fix_path" -ForegroundColor red
 }
 
 # HACK: The Godot package (on chocolatey, at least) doesn't create a start menu shortcut for some reason?
 # So, I figured I could just make one by creating a shortcut to the godot exe in the start menu programs folder
 Write-Host "`nAdding start menu shortcut for Godot. Hopefully future versions of the chocolatey package do this automatically" -ForegroundColor cyan
-$godotStartFixPath = "$HOME\dotfiles\.etc\windows\hack_fixes\godot_startmenu_fix.ps1"
-if (Test-Path -Path $godotStartFixPath) {
+$godot_start_fix_path = "$HOME\dotfiles\.etc\windows\hack_fixes\godot_startmenu_fix.ps1"
+if (Test-Path -Path $godot_start_fix_path) {
 	# run the script
-	&$godotStartFixPath
+	&$godot_start_fix_path
 } else {
-	Write-Host "Godot Start Menu fix failed. Path not found: $godotStartFixPath" -ForegroundColor red
+	Write-Host "Godot Start Menu fix failed. Path not found: $godot_start_fix_path" -ForegroundColor red
 }
 
 # While we're at it, we'll go ahead and add a start menu shortcut for my godot-neovim pipeline
 Write-Host "`nAdding start menu shortcut for geovide." -ForegroundColor cyan
-$geovideScriptPath = "$HOME\dotfiles\.etc\windows\geovide_add_startmenu.ps1"
-if (Test-Path -Path $geovideScriptPath) {
+$geovide_script_path = "$HOME\dotfiles\.etc\windows\geovide_add_startmenu.ps1"
+if (Test-Path -Path $geovide_script_path) {
 	# run the script
-	&$geovideScriptPath
+	&$geovide_script_path
 } else {
-	Write-Host "Failed to add geovide start menu shortcut. Path not found: $geovideScriptPath" -ForegroundColor red
+	Write-Host "Failed to add geovide start menu shortcut. Path not found: $geovide_script_path" -ForegroundColor red
 }
 
 
@@ -336,8 +334,8 @@ Write-Host "
 
 Write-Host "Setup Complete" -ForegroundColor green
 
-$ShouldContinue = $(Write-Host "Press [Enter] to exit, or type `y` to continue with optional additional setup: " -nonewline; Read-Host)
-if ($ShouldContinue -ne 'y') {
+$should_continue = $(Write-Host "Press [Enter] to exit, or type `y` to continue with optional additional setup: " -nonewline; Read-Host)
+if ($should_continue -ne 'y') {
 	exit
 }
 
@@ -346,10 +344,10 @@ if ($ShouldContinue -ne 'y') {
 ### optional additional setup
 ######
 
-$optionalSetupPath = "$HOME\dotfiles\.etc\windows\setup_optional.ps1"
-if (Test-Path -Path $optionalSetupPath) {
-	&$optionalSetupPath
+$optional_setup_path = "$HOME\dotfiles\.etc\windows\setup_optional.ps1"
+if (Test-Path -Path $optional_setup_path) {
+	&$optional_setup_path
 } else {
-	Write-Host "Optional setup failed. Path not found: $optionalSetupPath" -ForegroundColor red
+	Write-Host "Optional setup failed. Path not found: $optional_setup_path" -ForegroundColor red
 }
 
