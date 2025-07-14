@@ -10,6 +10,8 @@ $optional_chocopacks =
 
 $confirmed_optional_chocopacks
 foreach ($package in $optional_chocopacks) {
+	# TODO: write this loop
+	#
 	# $ShouldInstallOptional = 'n'
 	# should we install [this pack]?
 	# if yes, add to $confirmed
@@ -17,6 +19,11 @@ foreach ($package in $optional_chocopacks) {
 
 Write-Host "`nInstalling optional packages..." -ForegroundColor cyan
 choco install -y $confirmed_optional_chocopacks # (-y confirms running scripts without requiring user input)
+
+# install wsl2 separately to use params (windows subsystem for linux)
+# /Retry:true creates a self-deleting task to retry install on restart if WSL1 wasn't already on machine
+choco install -y wsl2 --params "/Version:2 /Retry:true"
+
 Write-Host "Finished installing optional packages." -ForegroundColor green
 
 
