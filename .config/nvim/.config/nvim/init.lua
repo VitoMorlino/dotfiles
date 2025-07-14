@@ -246,6 +246,7 @@ vim.keymap.set("n", "<S-BS>", "<C-i>") -- NOTE: shift-backspace wont work in som
 -- center the current line in the page when jumping down and up
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "G", "Gzz")
 
 -- center the current line when moving to the next search result
 vim.keymap.set("n", "n", "nzzzv")
