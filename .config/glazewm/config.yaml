@@ -100,6 +100,8 @@ window_rules:
       - window_process: {equals: "VRising"}
       - window_process: {equals: "WS-Win64-Shipping"} # Soulmask
       - window_process: {equals: "nineparchments_64bit"}
+      - window_process: {equals: "Gw"} # guild wars 1
+      - window_process: {equals: "Ale and Tale Tavern"}
 
   # force windows to workspace 1
   - commands: ["move --workspace 1", "focus --workspace 1"]
